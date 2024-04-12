@@ -1,0 +1,66 @@
+.background {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ffedad;
+}
+.loading {
+  position: relative;
+  margin-top: 100px;
+}
+.dotBox {
+  position: absolute;
+  left: 67px;
+  top: 35px;
+}
+.dots {
+  display: flex;
+  flex-direction: row;
+}
+
+.dots .droplet {
+  width: 15px;
+  height: 15px;
+  margin: 0 5px;
+
+  background-color: #a991e7;
+  border-radius: 50%;
+  transform-origin: center bottom;
+
+  animation: bounce 1.2s cubic-bezier(0.3, 0.01, 0.4, 1) infinite;
+}
+
+.dots .droplet:nth-child(1) {
+  animation-delay: -0.4s;
+}
+
+.dots .droplet:nth-child(2) {
+  animation-delay: -0.2s;
+}
+
+.dots .droplet:nth-child(3) {
+  animation-delay: 0s;
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+.character {
+  width: 270px;
+  height: 270px;
+  img {
+    width: 100%;
+  }
+  margin-bottom: 20px;
+}
+.comment {
+  margin-bottom: 20px;
+}

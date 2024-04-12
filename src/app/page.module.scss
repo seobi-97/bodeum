@@ -1,0 +1,195 @@
+.main {
+  background-color: var(--primary-color);
+  min-height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  .videoFileDesktop {
+    border-radius: 3%;
+    max-width: 100%;
+    height: auto;
+    @media (max-width: 1000px) {
+      display: none;
+    }
+  }
+
+  .videoFileMobile {
+    border-radius: 5%;
+    display: none;
+    @media (max-width: 1000px) {
+      display: block;
+    }
+  }
+}
+
+.topSection {
+  position: relative;
+
+  #scroll {
+    position: absolute;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    color: gray;
+    font-size: 28px;
+    left: 48%;
+    @media (max-width: 1000px) {
+      left: 39%;
+      bottom: 10px;
+    }
+    bottom: 30px;
+    transition: opacity 1s;
+
+    animation: bounceEffect 1.5s infinite;
+    @keyframes bounceEffect {
+      0% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-20px);
+      }
+      100% {
+        transform: translateY(0);
+      }
+    }
+  }
+}
+
+.bottomSection {
+  max-width: 1160px;
+  width: 100%; /* 화면 크기에 따라 너비가 조절됩니다 */
+  height: 830px;
+
+  @media (max-width: 1000px) {
+    height: auto;
+  }
+
+  .bgImgContainer {
+    width: 100%;
+    height: 100%;
+    background-image: url("/images/main_bg.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    @media (max-width: 1000px) {
+      flex-direction: column;
+      gap: 100px;
+      justify-content: center;
+    }
+
+    .leftBox {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+
+      #logo {
+        margin-left: 15px;
+      }
+
+      .desc {
+        font-size: 18px;
+        font-weight: 700;
+
+        @media (max-width: 1000px) {
+          font-size: 14px;
+        }
+      }
+
+      .nav {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .kakaoBtn {
+          display: flex;
+          width: 350px;
+          align-items: center;
+          justify-content: center;
+          height: 60px;
+          background-color: #ffe500;
+          span {
+            margin-left: 5px;
+          }
+          cursor: pointer;
+        }
+
+        .defaultBtn {
+          width: 350px;
+          background-color: #ffffff;
+          align-items: center;
+          height: 60px;
+          cursor: pointer;
+        }
+      }
+    }
+
+    .rightBox {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 50px;
+
+      & > div:nth-child(even) {
+        transform: translateY(-50px);
+      }
+
+      @media (max-width: 1000px) {
+        display: flex;
+        overflow-x: auto;
+        padding: 20px;
+        width: 100%;
+
+        & > div:nth-child(even) {
+          transform: none;
+        }
+
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+
+      .characterCard {
+        width: 250px;
+        min-width: 250px;
+        height: 300px;
+        background-color: rgba(255, 255, 255, 0.3);
+
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        padding: 20px;
+        border: 2px solid #fff;
+        border-radius: 10%;
+
+        &:hover {
+          filter: brightness(90%);
+          cursor: pointer;
+        }
+
+        .name {
+          font-size: 20px;
+          font-weight: 700;
+        }
+
+        .info {
+          font-size: 16px;
+          font-weight: 400;
+          text-align: center;
+        }
+      }
+    }
+  }
+}

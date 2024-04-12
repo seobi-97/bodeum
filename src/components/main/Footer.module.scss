@@ -1,0 +1,15 @@
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #96bc8d;
+  width: 100%;
+  color: #fff;
+  padding: 20px;
+
+  .copyRight {
+    @media (max-width: 1000px) {
+      font-size: 14px;
+    }
+  }
+}

@@ -1,0 +1,51 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 464px;
+  height: 240px;
+  flex-shrink: 0;
+  border-radius: 40px;
+  border: 1px solid #fff;
+  background: #dae4af;
+  box-shadow: 5px 5px 20px 0px rgba(124, 137, 109, 0.2);
+  .buttonWrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+  button {
+    display: flex;
+    width: 171.852px;
+    height: 48px;
+    padding: 20px 60px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    margin: 5px 5px;
+  }
+}
+.text {
+  color: #333;
+  text-align: center;
+  font-feature-settings:
+    "clig" off,
+    "liga" off;
+  font-family: IM_Hyemin;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 50px; /* 208.333% */
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.button1 {
+  border-radius: 20px;
+  background: #fff;
+}
+.button2 {
+  border-radius: 20px;
+  background: #a991e7;
+}
