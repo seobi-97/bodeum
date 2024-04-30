@@ -3,7 +3,7 @@ import { ChatShareData } from "@/types/chat";
 import { UpdateUserData } from "@/types/user";
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+  baseURL: "http://3.34.172.192:8080",
   headers: {
     "Content-Type": "application/json;charset=UTF-8",
     Accept: "application/json,",
