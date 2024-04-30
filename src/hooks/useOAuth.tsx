@@ -24,6 +24,7 @@ function useOAuth(limitParam: string | null) {
         isLogin: true,
         token: data?.data.data.token,
         userId: data?.data.data.userId,
+        nickName: data?.data.data.nickName,
       });
   }, [data]);
   return { isLoading, error };

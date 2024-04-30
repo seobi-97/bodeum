@@ -49,3 +49,18 @@
   border-radius: 20px;
   background: #a991e7;
 }
+
+@media (max-width: 1000px) {
+}
+@media (max-width: 560px) {
+  .container {
+    width: 300px;
+    button {
+      width: 120px;
+      padding: 0;
+    }
+    .text{
+      font-size: 18px;
+    }
+  }
+}

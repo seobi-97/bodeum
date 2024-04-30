@@ -19,7 +19,9 @@ function write() {
   const CHATSHARE = useRecoilValue(chatShareSelector);
   const [content, setContent] = useState<JSONDATA>();
   const [text, setText] = useState<string>("");
+  const [nickname, setNickname] = useState<string>("");
 
+  const USER = useRecoilValue(userSelector);
   const USERID = useRecoilValue(userSelector).userId;
   const CHARACTERNAME = useRecoilValue(characterSelector).name;
 
@@ -38,6 +40,11 @@ function write() {
     comment: text,
   });
   useEffect(() => {
+    if (USER) {
+      setNickname(USER.nickName);
+    }
+  }, [USER]);
+  useEffect(() => {
     setContent(CHATSHARE);
     if (data !== undefined) {
       console.log(data);
@@ -45,6 +52,9 @@ function write() {
     }
   }, [CHATSHARE, data]);
 
+  const prevButton = () => {
+    router.push("/chatShare");
+  };
   const sendBoard = () => {
     if (text !== "") {
       setText("");
@@ -66,7 +76,9 @@ function write() {
           <div className={styles.left}>
             <div className={styles.leftTop}>
               <img src="/images/userIcon.svg" alt="" />
-              <div>닉네임</div>
+              <div>
+                <p>{nickname}</p>
+              </div>
             </div>
             <div className={styles.leftBottom}>
               <div>
@@ -85,7 +97,7 @@ function write() {
           </div>
         </div>
         <div className={styles.buttonWrap}>
-          <button className={styles.button1} type="button">
+          <button className={styles.button1} type="button" onClick={prevButton}>
             돌아가기
           </button>
           <button className={styles.button2} type="button" onClick={sendBoard}>

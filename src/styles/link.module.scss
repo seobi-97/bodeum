@@ -1,0 +1,27 @@
+.box {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 60px;
+  right: -30px;
+  width: 110px;
+  min-height: 60px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.15);
+  font-size: 14px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+  .line {
+    width: 100%;
+    border-top: 1px solid #a7a7a7;
+    margin-top: 6px;
+    margin-bottom: 6px;
+  }
+  .copy,
+  .close {
+    cursor: pointer;
+  }
+}

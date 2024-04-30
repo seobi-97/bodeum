@@ -1,0 +1,137 @@
+.background {
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ffedad;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100vw;
+  button {
+    cursor: pointer;
+  }
+}
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  cursor: pointer;
+}
+.buttonWrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  button {
+    display: flex;
+    width: 171.852px;
+    height: 48px;
+    padding: 20px 60px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    margin: 5px 5px;
+    border-radius: 20px;
+    background: #fff;
+  }
+  .button1 {
+    border-radius: 20px;
+    background: #fff;
+  }
+  .button2 {
+    border-radius: 20px;
+    background: #a991e7;
+  }
+}
+.contentBody {
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.title {
+  margin-bottom: 10px;
+}
+.subtitle {
+  margin-bottom: 10px;
+}
+.first {
+  width: 80vw;
+  height: 190px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 10px;
+  div {
+    span:nth-child(2) {
+      color: red;
+    }
+  }
+}
+.second {
+  width: 80vw;
+  height: 70px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 10px;
+}
+.third {
+  width: 80vw;
+  height: 100px;
+  background: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  margin-bottom: 40px;
+}
+.second input {
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+.second input + label {
+  display: inline-block;
+  position: relative;
+  padding-left: 26px;
+  cursor: pointer;
+}
+.second input + label::before {
+  position: absolute;
+  left: 0;
+  top: 3px;
+  width: 20px;
+  height: 20px;
+  text-align: center;
+  background: url("") no-repeat;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+.second input + label::after {
+  position: absolute;
+  left: 0;
+  top: 3px;
+  width: 20px;
+  height: 20px;
+  background: url("") no-repeat;
+  border-radius: 5px;
+}
+.second input + label span {
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 26px;
+  letter-spacing: -1px;
+  color: rgba(0, 0, 0, 0.5);
+}

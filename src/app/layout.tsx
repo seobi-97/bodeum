@@ -1,4 +1,4 @@
-import "./global.scss";
+import "../styles/global.scss";
 import ReactQueryProvider from "./ReactQueryProvider";
 import RecoilRootWrapper from "./RecoilRootWrapper";
 

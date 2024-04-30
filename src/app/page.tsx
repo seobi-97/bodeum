@@ -84,6 +84,7 @@ export default function MainPage() {
           autoPlay
           muted
           loop
+          playsInline
         >
           <source src="/videos/main_video_desktop.mp4" type="video/mp4" />
           Your browser does not support the video tag.

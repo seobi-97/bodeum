@@ -18,6 +18,13 @@
 .dots {
   display: flex;
   flex-direction: row;
+  @media (max-width: 1000px) {
+    background-color: #fff;
+    display: flex;
+    padding: 10px 25px 10px 25px;
+    text-align: center;
+    border-radius: 20px;
+  }
 }
 
 .dots .droplet {
@@ -30,6 +37,11 @@
   transform-origin: center bottom;
 
   animation: bounce 1.2s cubic-bezier(0.3, 0.01, 0.4, 1) infinite;
+  @media (max-width: 1000px) {
+    width: 10px;
+    height: 10px;
+    animation: bounce2 1.2s cubic-bezier(0.3, 0.01, 0.4, 1) infinite;
+  }
 }
 
 .dots .droplet:nth-child(1) {
@@ -51,6 +63,15 @@
   }
   50% {
     transform: translateY(-20px);
+  }
+}
+@keyframes bounce2 {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
   }
 }
 .character {

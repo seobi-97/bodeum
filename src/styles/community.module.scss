@@ -1,5 +1,6 @@
 .background {
   width: 100vw;
+  min-height: 100vh;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -7,7 +8,10 @@
   background: #ffedad;
 }
 .container {
-  width: 1100px;
+  width: 100vw;
+  button {
+    cursor: pointer;
+  }
 }
 .header {
   display: flex;
@@ -16,6 +20,7 @@
   justify-content: space-between;
   margin-top: 20px;
   margin-bottom: 30px;
+  cursor: pointer;
 }
 .search {
   display: flex;
@@ -44,8 +49,10 @@
   justify-content: center;
   margin-top: 70px;
   gap: 40px;
+  transition: 0.7s;
 }
 .box {
+  position: relative;
   display: flex;
   margin: 0 auto;
   width: 300px;
@@ -56,6 +63,194 @@
   flex-shrink: 0;
   border: 2px solid #ffffff;
   background: rgba(255, 255, 255, 0.3);
-  border-radius: 40px;
+  border-radius: 30px;
   backdrop-filter: blur(25px);
+}
+.top {
+  display: flex;
+  margin-bottom: 10px;
+  .topRight {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    margin-left: 5px;
+    margin-right: 10px;
+    .nickName {
+      font-size: 14px;
+    }
+    .date {
+      font-size: 12px;
+    }
+  }
+  .dots {
+    cursor: pointer;
+  }
+}
+.commentBox {
+  display: flex;
+  width: 220px;
+  margin-bottom: 20px;
+  font-size: 15px;
+}
+.answerBox {
+  width: 240px;
+  height: 150px;
+  background-color: #fff;
+  padding: 10px;
+  border-radius: 20px;
+  p {
+    font-size: 14px;
+  }
+}
+.user {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  height: 100%;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  .imgBox {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    background-color: #dae4af;
+    img {
+      cursor: pointer;
+      width: 25px;
+      height: 25px;
+      position: absolute;
+      right: -8px;
+      top: 78px;
+    }
+  }
+}
+.userBoard {
+  display: grid;
+  grid-template-columns: 300px 300px 300px;
+  justify-content: center;
+  margin-top: 20px;
+  gap: 40px;
+}
+.favor {
+  ul {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    padding: 40px;
+    li {
+      cursor: pointer;
+      color: #9a9a9a;
+      border-bottom: 1px solid #9a9a9a;
+    }
+    .active {
+      color: #000;
+      border-bottom: 1px solid #000000;
+    }
+  }
+}
+.fluffyContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100vw;
+  height: 100%;
+  gap: 10px;
+  .fluffyBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 230px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    img {
+      width: 100px;
+      height: 100px;
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  .header {
+    width: 95vw;
+    .homeIcon {
+      img {
+        content: url("/images/home.svg");
+      }
+    }
+  }
+  .search {
+    width: 90vw;
+  }
+  .board {
+    display: flex;
+    flex-direction: column;
+    .box {
+      width: 80vw;
+      .top {
+        position: relative;
+        width: 87%;
+        .topRight {
+          margin-left: 10px;
+        }
+        .dots {
+          position: absolute;
+          right: 5px;
+        }
+      }
+      .commentBox {
+        width: 80%;
+      }
+      .answerBox {
+        width: 85%;
+      }
+    }
+  }
+  .favor {
+    ul {
+      padding: 40px;
+    }
+  }
+  .userBoard {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-top: 0;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .fluffyContainer {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: 300px 300px;
+    .fluffyBox {
+      width: 250px;
+      height: 250px;
+    }
+  }
+}
+@media (max-width: 560px) {
+  .fluffyContainer {
+    display: grid;
+    justify-items: center;
+    grid-template-columns: 150px 150px;
+    .fluffyBox {
+      width: 150px;
+      height: 150px;
+      img {
+        width: 70px;
+        height: 70px;
+      }
+    }
+  }
 }

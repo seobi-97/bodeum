@@ -28,7 +28,7 @@ function loading() {
           alt="character"
         />
       </div>
-      <div className={styles.comment}>캐릭터 문구</div>
+      <div className={styles.comment}>로딩중</div>
     </div>
   );
 }

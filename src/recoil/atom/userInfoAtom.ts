@@ -11,6 +11,7 @@ const userState = atom({
     isLogin: false,
     token: "",
     userId: "",
+    nickName: "",
   },
   effects_UNSTABLE: [persistAtom],
 });

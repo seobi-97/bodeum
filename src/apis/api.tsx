@@ -41,6 +41,9 @@ const apis = {
   // 회원탈퇴
   secession: (id: number) => api.delete(`/delete/${id}`),
 
+  // 유저 정보 조회
+  getUserData: (id: number) => api.get(`/${id}`),
+
   // 회원정보 수정
   // nickName: 유저 닉네임, favoriteFluffyName: 선호하는 캐릭터
   update: (id: number, userData: UpdateUserData) =>

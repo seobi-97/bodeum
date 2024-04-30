@@ -1,0 +1,132 @@
+.background {
+  width: 100vw;
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #ffedad;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100vw;
+  button {
+    cursor: pointer;
+  }
+}
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  cursor: pointer;
+}
+.content {
+  display: flex;
+  height: calc(100vh - 102px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+.user {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  margin: 0 auto;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+  .imgBox {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+    border-radius: 20px;
+    background-color: #dae4af;
+    overflow: hidden;
+    .preView {
+      width: 100px;
+      height: 100px;
+    }
+    label {
+      cursor: pointer;
+      display: inline-block;
+      position: absolute;
+      right: -8px;
+      top: 78px;
+      width: 30px;
+      height: 30px;
+      background: url("/images/gear.svg") no-repeat;
+    }
+    input {
+      display: none;
+    }
+  }
+}
+.userBox {
+  margin: 0 auto;
+  div {
+    span:nth-child(2) {
+      color: red;
+    }
+  }
+  .whiteBox {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    margin-top: 5px;
+    margin-bottom: 15px;
+    padding: 10px 20px;
+    width: 80vw;
+    height: 40px;
+    border-radius: 10px;
+    font-size: 14px;
+    input {
+      font-size: 13px;
+      width: 200px;
+    }
+  }
+  .charBox {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    margin-top: 5px;
+    margin-bottom: 15px;
+
+    font-size: 14px;
+    gap: 20px;
+    div {
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      border-radius: 10px;
+      padding: 10px 20px;
+      background-color: #fff;
+    }
+    .active {
+      border: 2px solid #9ce596;
+    }
+  }
+}
+.buttonWrap {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  button {
+    display: flex;
+    width: 171.852px;
+    height: 48px;
+    padding: 20px 60px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+    margin: 5px 5px;
+    border-radius: 20px;
+    background: #fff;
+  }
+}

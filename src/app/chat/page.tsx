@@ -17,11 +17,18 @@ interface JSONDATA {
 }
 function chat() {
   const [text, setText] = useState<string>("");
+  const [mobile, setMobile] = useState(false);
   const [message, setMessages] = useState<JSONDATA[]>([]);
   const [open, setOpen] = useState<boolean>(false);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [imgNum, setImgNum] = useState(9);
   const [charName, setCharName] = useState("");
+
+  const isClient = typeof window === "object";
+  const getSize = () => {
+    return { width: isClient ? window.innerWidth : undefined };
+  };
+  const [windowSize, setWindowSize] = useState(getSize);
 
   // 선택한 캐릭터의 정보(id)
   const CHARACTERSTATUS = useRecoilValue(characterSelector);
@@ -51,6 +58,18 @@ function chat() {
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
   };
+  const handelResize = () => {
+    setWindowSize(getSize());
+  };
+  useEffect(() => {
+    if (windowSize.width !== undefined && windowSize.width < 1000) {
+      setMobile(true);
+    } else {
+      setMobile(false);
+    }
+    window.addEventListener("resize", handelResize);
+    return () => window.removeEventListener("resize", handelResize);
+  });
   useEffect(() => {
     // recoil값을 그대로 쓰면, 해당 값이 서버와 클라이언트가 다르다는 오류가 발생한다.
     // 따라서 useState, useEffect로 핸들링 해준다.
@@ -90,7 +109,7 @@ function chat() {
   };
   if (isLoading) console.log("로딩중");
   return (
-    <div>
+    <div className={styles.main}>
       <div className={styles.finish} role="none" onClick={ExitClick}>
         <img src="/images/x.svg" alt="x" />
       </div>
@@ -181,17 +200,45 @@ function chat() {
                   <img src="/images/arrow.svg" alt="arrow" />
                   <p>펼치기</p>
                 </div>
-                <div className={styles.text}>
-                  {isLoading || isFetching ? (
-                    <Dots />
+                {
+                  // 모바일 반응형 화면일 때, 일반 펼쳐진 화면과 디자인이 같음
+                  // 그리고 loading,fetching중 일때 애니메이션 보여주기
+                  mobile ? (
+                    <div className={styles.msgBox}>
+                      {message?.map((msg: JSONDATA, idx: number) => (
+                        <div key={idx}>
+                          {msg.id === 1 ? (
+                            <div className={styles.msgType0}>
+                              <span>{msg.text}</span>
+                            </div>
+                          ) : (
+                            <div className={styles.msgType1}>
+                              <span>{msg.text}</span>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                      {isLoading || isFetching ? (
+                        <div className={styles.msgType2}>
+                          <Dots />
+                        </div>
+                      ) : null}
+                    </div>
                   ) : (
-                    <p>
-                      {message.length === 0
-                        ? defaultMessage
-                        : message.findLast(element => element.id === 1)?.text}
-                    </p>
-                  )}
-                </div>
+                    <div className={styles.text}>
+                      {isLoading || isFetching ? (
+                        <Dots />
+                      ) : (
+                        <p>
+                          {message.length === 0
+                            ? defaultMessage
+                            : message.findLast(element => element.id === 1)
+                                ?.text}
+                        </p>
+                      )}
+                    </div>
+                  )
+                }
                 <div className={styles.input}>
                   <input
                     type="text"
@@ -200,7 +247,6 @@ function chat() {
                     onKeyUp={activeEnter}
                     placeholder="내용을 입력해주세요"
                   />
-                  {/* <input name="text" value={text} onChange={onInputChange} /> */}
                   <div
                     role="none"
                     onClick={() => {
