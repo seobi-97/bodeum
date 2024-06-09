@@ -4,6 +4,7 @@
   height: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   background: #ffedad;
 }
@@ -20,10 +21,17 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
   margin-top: 20px;
   margin-bottom: 30px;
-  cursor: pointer;
+  img {
+    cursor: pointer;
+  }
+  div {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+  }
 }
 .content {
   display: flex;
@@ -41,6 +49,7 @@
   justify-content: space-between;
   align-items: center;
   flex-shrink: 0;
+  padding-top: 100px;
   .imgBox {
     position: relative;
     width: 100px;
@@ -89,6 +98,17 @@
     input {
       font-size: 13px;
       width: 200px;
+    }
+    .kakao {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+  }
+  div:nth-child(1) {
+    .whiteBox {
+      background-color: #efeeee;
+      color: #6d6d6d;
     }
   }
   .charBox {

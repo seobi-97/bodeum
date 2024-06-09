@@ -11,60 +11,40 @@ import { GetCommunity } from "@/types/community";
 import Skeleton from "../../components/skeleton";
 import LinkComponents from "@/components/Link";
 import { CharacterData } from "@/types/characters";
-
-// 캐릭터 임시 데이터
-// 이미지 경로만 하드코딩 이용
-const CHARACTER = [
-  {
-    id: 9,
-    name: "토비",
-    src: "/images/ch_tobi.png",
-    info: "따뜻한 마음을 지닌 활발한 토비 당신에게 즐거운 웃음과 감동을 전해 밝게 비춰드릴게요",
-  },
-  {
-    id: 10,
-    name: "마이로",
-    src: "/images/ch_myro.png",
-    info: "이성적이면서 현실적인 판단을 당신에게 전달해드릴 똑똑한 조언자 마이로에요",
-  },
-  {
-    id: 11,
-    name: "루미나",
-    src: "/images/ch_rumina.png",
-    info: "감성적이고 창의적인 루미나 당신이 예상치 못한 답변으로 감동을 전달해드릴게요",
-  },
-  {
-    id: 12,
-    name: "블리",
-    src: "/images/ch_bly.png",
-    info: "누구에게나 사랑을 전달하며 온 세상을 따뜻하게 만드는 블리 당신에게 희망을 드릴게요",
-  },
-];
+import Header from "@/components/header";
+import { useDeleteAll } from "@/hooks/useDeleteStorage";
+import CHARACTER from "@/data/Character";
+import Toast from "@/components/toast";
 
 function MyPage() {
   const { isLoading, data } = useCommunity();
   console.log(data);
+  const USER = useRecoilValue(userSelector);
   const BOARD = useRecoilValue(communitySelector);
   const router = useRouter();
-  const USER = useRecoilValue(userSelector);
+
   const [nickname, setNickname] = useState<string>("");
   const [userId, setUserId] = useState<number>(-1);
+  const [userImage, setUserImage] = useState("");
   const [active, setActive] = useState(0);
   const [board, setBoard] = useState([]);
   const [open, setOpen] = useState<string | null>(null);
 
   const [total, setTotal] = useState<number[]>([0, 0, 0, 0]);
   const [sortCharacter, setSortCharacter] = useState<CharacterData[]>([]);
+  const [toast, setToast] = useState<boolean>(false);
   useEffect(() => {
     if (USER) {
       setNickname(USER.nickName);
       setUserId(USER.userId);
+      setUserImage(USER.imageURL);
     }
   }, [USER]);
 
   // board의 fluffyName으로 카운트
   const countFluffy = () => {
     const count = [0, 0, 0, 0];
+    console.log(board);
     board.forEach((val: GetCommunity) => {
       if (val.fluffyName === "토비") {
         count[0] += 1;
@@ -80,17 +60,21 @@ function MyPage() {
     setTotal(count);
   };
   useEffect(() => {
-    if (BOARD) {
-      setBoard(BOARD);
-      countFluffy();
+    if (data) {
+      const filterBoard = BOARD.filter(
+        (val: GetCommunity) => val.userId === userId,
+      );
+      console.log("filterBoard", filterBoard);
+      setBoard(filterBoard);
     }
-  }, [BOARD]);
-
-  const prevButton = () => {
-    router.push("/");
-  };
-  const homeButton = () => {
-    router.push("/");
+  }, [data]);
+  useEffect(() => {
+    countFluffy();
+  }, [board]);
+  // 모든 스토리지 정보 삭제
+  const Logout = () => {
+    useDeleteAll();
+    window.location.replace("/");
   };
   const editButton = () => {
     router.push("/edit");
@@ -105,30 +89,36 @@ function MyPage() {
       ...item,
       count: total[index],
     }));
+    console.log(combined);
     combined.sort((a, b) => b.count - a.count);
     setSortCharacter(combined);
   };
   const handleOpen = (chatId: string) => {
     setOpen(open === chatId ? null : chatId);
   };
+  const handleToast = () => {
+    setToast(true);
+    setTimeout(() => {
+      setToast(false);
+    }, 1000);
+  };
   return (
     <div className={styles.background}>
+      {toast && <Toast text="링크를 클립보드에 복사했습니다." />}
       <div className={styles.container}>
-        <div className={styles.header}>
+        <Header community={false} modal={false} />
+        <div className={styles.logout} onClick={Logout} role="none">
           <img
-            src="/images/blackPrev.svg"
-            alt="prev"
-            onClick={prevButton}
-            role="none"
+            className={styles.logoutImage}
+            src="/images/logout.svg"
+            alt="logout"
           />
-          <h1>Bodeum 게시판</h1>
-          <div className={styles.homeIcon} onClick={homeButton} role="none">
-            <img src="/images/bodeumIcon.svg" alt="bodeumIcon" />
-          </div>
+          <p>로그아웃</p>
         </div>
         <div className={styles.user}>
           <div className={styles.imgBox} onClick={editButton} role="none">
-            <img src="/images/gear.svg" alt="gear" />
+            <img className={styles.userImage} src={userImage} alt="userImage" />
+            <img className={styles.gear} src="/images/gear.svg" alt="gear" />
           </div>
           <p>{nickname}</p>
         </div>
@@ -168,48 +158,43 @@ function MyPage() {
                   .slice(0)
                   .reverse()
                   .map((val: GetCommunity) => {
-                    if (userId === val.userId) {
-                      return (
-                        <div
-                          key={val.chatId}
-                          className={styles.box}
-                          id={`board_${val.chatId}`}
-                        >
-                          <div className={styles.top}>
-                            <img src="/images/userIcon.svg" alt="userIcon" />
-                            <div className={styles.topRight}>
-                              <div className={styles.nickName}>
-                                {val.nickname}
-                              </div>
-                              <div className={styles.date}>{val.dateTime}</div>
+                    return (
+                      <div
+                        key={val.chatId}
+                        className={styles.box}
+                        id={`board_${val.chatId}`}
+                      >
+                        <div className={styles.top}>
+                          <img src="/images/userIcon.svg" alt="userIcon" />
+                          <div className={styles.topRight}>
+                            <div className={styles.nickName}>
+                              {val.nickname}
                             </div>
-                            <div
-                              className={styles.dots}
-                              onClick={() => handleOpen(String(val.chatId))}
-                              role="none"
-                            >
-                              <img
-                                src="/images/threeDots.svg"
-                                alt="threeDots"
-                              />
-                            </div>
+                            <div className={styles.date}>{val.dateTime}</div>
                           </div>
-
-                          <div className={styles.commentBox}>{val.comment}</div>
-                          <div className={styles.answerBox}>
-                            <p>{val.answer}</p>
+                          <div
+                            className={styles.dots}
+                            onClick={() => handleOpen(String(val.chatId))}
+                            role="none"
+                          >
+                            <img src="/images/threeDots.svg" alt="threeDots" />
                           </div>
-                          {open === String(val.chatId) && (
-                            <LinkComponents
-                              handleOpen={handleOpen}
-                              chatId={val.chatId}
-                              userId={val.userId}
-                            />
-                          )}
                         </div>
-                      );
-                    }
-                    return null;
+
+                        <div className={styles.commentBox}>{val.comment}</div>
+                        <div className={styles.answerBox}>
+                          <p>{val.answer}</p>
+                        </div>
+                        {open === String(val.chatId) && (
+                          <LinkComponents
+                            handleOpen={handleOpen}
+                            chatId={val.chatId}
+                            userId={val.userId}
+                            handleToast={handleToast}
+                          />
+                        )}
+                      </div>
+                    );
                   })
               )}
             </div>

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import apis from "@/apis/api";
 
 function useResign(id: number) {
-  const { isLoading, data } = useQuery({
+  const { isLoading, data, refetch } = useQuery({
     queryKey: ["resign"],
     queryFn: async () => {
       const response = await apis.secession(id);
@@ -10,7 +10,7 @@ function useResign(id: number) {
     },
     enabled: false,
   });
-  return { isLoading, data };
+  return { isLoading, data, refetch };
 }
 
 export default useResign;

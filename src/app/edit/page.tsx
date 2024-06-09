@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useRecoilValue } from "recoil";
 import userSelector from "@/recoil/selector/userSelector";
@@ -8,110 +8,112 @@ import styles from "../../styles/edit.module.scss";
 import useTotal from "@/hooks/useTotal";
 import userTotalSelector from "@/recoil/selector/userTotalSelector";
 import Favorite from "@/components/Favorite";
+import useEdit from "@/hooks/useEdit";
+import Loading from "@/components/loading";
+import Header from "@/components/header";
+import Toast from "@/components/toast";
 
 function Edit() {
-  const [files, setFiles] = useState<File | null>();
   const USER = useRecoilValue(userSelector);
-  const { data } = useTotal(USER.userId);
+  const { data, refetch2 } = useTotal(USER.userId);
+  const [showToast, setShowToast] = useState<boolean>(false);
   console.log(data);
   const USERDATA = useRecoilValue(userTotalSelector);
 
   const [nickname, setNickname] = useState<string>("");
   const [email, setEmail] = useState([]);
-  const [fluffy, setFluffy] = useState<string | null>("");
+  const [userImage, setUserImage] = useState("");
+  const [favoriteFluffyName, setFluffy] = useState<string>("");
   const [editActive, setEditActive] = useState<boolean>(false);
   const [charNum, setCharNum] = useState<number>(-1);
   const [text, setText] = useState<string>("");
+  const [fluffyName, setFluffyname] = useState("");
+  const { isLoading, isFetching, data2, refetch } = useEdit(USER.userId, {
+    nickname: text,
+    favoriteFluffyName: fluffyName,
+  });
 
-  const [uploadImgUrl, setUploadImgUrl] = useState<string>("");
   const router = useRouter();
-  useEffect(() => {
-    const fileRead = new FileReader();
-    if (files) {
-      fileRead.readAsDataURL(files);
-      fileRead.onloadend = () => {
-        setUploadImgUrl(String(fileRead.result));
-      };
-    }
-  }, [files]);
+
   useEffect(() => {
     if (USER) {
-      setNickname(USER.nickName);
+      setUserImage(USER.imageURL);
     }
   }, [USER]);
   useEffect(() => {
     if (USERDATA) {
       setEmail(USERDATA.email);
+      setNickname(USERDATA.nickname);
       setFluffy(USERDATA.favoriteFluffyName);
     }
   }, [USERDATA]);
-  // 모든 스토리지 정보 삭제
-  const Logout = () => {
-    window.localStorage.removeItem("loginState");
-    window.sessionStorage.removeItem("chat");
-    window.sessionStorage.removeItem("chatShare");
-    window.sessionStorage.removeItem("character");
-    router.push("/");
-  };
-  const onUploadImage = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (!e.target.files) {
-        return 0;
-      }
-      setFiles(e.target.files[0]);
+  useEffect(() => {
+    if (charNum === 0) {
+      setFluffyname("토비");
+    } else if (charNum === 1) {
+      setFluffyname("마이로");
+    } else if (charNum === 2) {
+      setFluffyname("루미나");
+    } else if (charNum === 3) {
+      setFluffyname("블리");
+    }
+  }, [charNum]);
+  useEffect(() => {
+    refetch2();
+  }, []);
+  useEffect(() => {
+    if (data2 !== undefined) {
+      setShowToast(true);
+      setTimeout(() => {
+        setShowToast(false);
+        window.location.replace("/edit");
+      }, 1000);
+    }
+  }, [data2]);
 
-      return e.target.files[0].name;
-    },
-    [],
-  );
+  useEffect(() => {
+    if (data2 !== undefined) {
+      setShowToast(true);
+      const timeout = setTimeout(() => {
+        setShowToast(false);
+        window.location.replace("/edit");
+      }, 1000);
+      return () => clearTimeout(timeout);
+    }
+    return () => {};
+  }, [data2]);
+
   // 글쓰기
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setText(e.target.value);
   };
+  // 수정하기 활성화
   const editButton = () => {
     setEditActive(true);
+  };
+  // 수정한 내용 저장하기
+  const saveButton = () => {
+    refetch();
   };
   const selectChar = (num: number) => {
     setCharNum(num);
   };
-  const prevButton = () => {
-    router.push("/");
-  };
-  const homeButton = () => {
-    router.push("/");
-  };
   const resignButton = () => {
     router.push("/resign");
   };
+  const prevButton = () => {
+    router.push("/mypage");
+  };
+  if (isLoading || isFetching) <Loading />;
   return (
     <div className={styles.background}>
+      {showToast && <Toast text="회원정보가 수정되었습니다." />}
       <div className={styles.container}>
-        <div className={styles.header}>
-          <img
-            src="/images/blackPrev.svg"
-            alt="prev"
-            onClick={prevButton}
-            role="none"
-          />
-          <h1>Bodeum 게시판</h1>
-          <div className={styles.homeIcon} onClick={homeButton} role="none">
-            <img src="/images/bodeumIcon.svg" alt="bodeumIcon" />
-          </div>
-        </div>
+        <Header community={false} modal={false} />
         <div className={styles.content}>
           <div className={styles.user}>
             <div className={styles.imgBox} role="none">
-              {uploadImgUrl !== "" ? (
-                <img className={styles.preView} src={uploadImgUrl} alt="img" />
-              ) : null}
-              <label htmlFor="file">
-                <input
-                  type="file"
-                  id="file"
-                  accept="image/*"
-                  onChange={onUploadImage}
-                />
-              </label>
+              <img className={styles.preView} src={userImage} alt="img" />
             </div>
             <p>{nickname}</p>
           </div>
@@ -119,7 +121,14 @@ function Edit() {
             <div>
               <span>이메일 </span>
               <span>*</span>
-              <div className={styles.whiteBox}>{email}</div>
+              <div className={styles.whiteBox}>
+                <img
+                  className={styles.kakao}
+                  src="/images/kakaocircle.svg"
+                  alt="kakao"
+                />
+                {email}
+              </div>
             </div>
             <div>
               <span>닉네임 </span>
@@ -144,21 +153,37 @@ function Edit() {
               {editActive ? (
                 <Favorite active={charNum} selectChar={selectChar} />
               ) : (
-                <div className={styles.whiteBox}>{fluffy || ""}</div>
+                <div className={styles.whiteBox}>
+                  {favoriteFluffyName || ""}
+                </div>
               )}
             </div>
           </div>
           <div className={styles.buttonWrap}>
             <button
-              className={styles.button1}
+              className={styles.button2}
               type="button"
-              onClick={editButton}
+              onClick={prevButton}
             >
-              수정하기
+              취소하기
             </button>
-            <button className={styles.button2} type="button" onClick={Logout}>
-              로그아웃
-            </button>
+            {editActive ? (
+              <button
+                className={styles.button1}
+                type="button"
+                onClick={saveButton}
+              >
+                저장하기
+              </button>
+            ) : (
+              <button
+                className={styles.button1}
+                type="button"
+                onClick={editButton}
+              >
+                수정하기
+              </button>
+            )}
           </div>
           <button type="button" onClick={resignButton}>
             회원탈퇴

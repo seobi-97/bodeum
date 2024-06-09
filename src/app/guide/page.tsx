@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useRecoilValue } from "recoil";
 import characterSelector from "@/recoil/selector/characterSelector";
 import styles from "../../styles/chat.module.scss";
+// import styles from "../../styles/guide.module.scss";
 
 function guide() {
   const CHARACTERSTATUS = useRecoilValue(characterSelector);
@@ -98,7 +99,6 @@ function guide() {
                 <div className={styles.top} />
                 <div className={styles.input}>
                   <input type="text" placeholder="내용을 입력해주세요" />
-                  {/* <input name="text" value={text} onChange={onInputChange} /> */}
                   <div>
                     <img
                       className={styles.send}
@@ -129,15 +129,17 @@ function guide() {
               <div className={styles.character}>
                 <img src={`/images/character${imgNum}.svg`} alt="character" />
               </div>
-              <div className={styles.scrap}>
-                <img src="/images/scrap.svg" alt="scrap" />
-              </div>
-              <div className={styles.name}>
-                <p>{charName}</p>
-              </div>
-              <div className={styles.top2}>
-                <img src="/images/arrow.svg" alt="arrow" />
-                <button type="button">펼치기</button>
+              <div className={styles.topSection}>
+                <div className={styles.scrap}>
+                  <img src="/images/scrap.svg" alt="scrap" />
+                </div>
+                <div className={styles.name}>
+                  <p>{charName}</p>
+                </div>
+                <div className={styles.top2}>
+                  <img src="/images/arrow.svg" alt="arrow" />
+                  <button type="button">펼치기</button>
+                </div>
               </div>
               <div className={styles.text}>
                 <p>
@@ -145,7 +147,6 @@ function guide() {
                   왔니?
                 </p>
               </div>
-
               <div className={styles.input}>
                 <input type="text" placeholder="내용을 입력해주세요" />
                 {/* <input name="text" value={text} onChange={onInputChange} /> */}

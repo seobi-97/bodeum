@@ -11,7 +11,12 @@ const { persistAtom } = recoilPersist({
 
 const charactersState = atom({
   key: "characters",
-  default: [{ id: 0, name: "", description: "" }],
+  default: [
+    { id: 9, name: "", description: "" },
+    { id: 10, name: "", description: "" },
+    { id: 11, name: "", description: "" },
+    { id: 12, name: "", description: "" },
+  ],
   effects_UNSTABLE: [persistAtom],
 });
 

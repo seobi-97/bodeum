@@ -5,25 +5,14 @@ const sessionStorage =
   typeof window !== "undefined" ? window.sessionStorage : undefined;
 
 const { persistAtom } = recoilPersist({
-  key: "board",
+  key: "boardDetail",
   storage: sessionStorage,
 });
 
-const communityState = atom({
-  key: "board",
-  default: [
-    {
-      answer: "",
-      chatId: 0,
-      comment: "",
-      dateTime: null,
-      fluffyName: "",
-      nickname: "",
-      userId: 1,
-      imageURL: "",
-    },
-  ],
+const boardDetailState = atom({
+  key: "boardDetail",
+  default: { id: "" },
   effects_UNSTABLE: [persistAtom],
 });
 
-export default communityState;
+export default boardDetailState;

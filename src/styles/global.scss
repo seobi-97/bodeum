@@ -11,6 +11,11 @@
   src: url("../../public/fonts/IM_Hyemin-Bold.ttf");
   font-weight: 600;
 }
+@font-face {
+  font-family: "Super-Bubble";
+  src: url("../../public//fonts/Super\ Bubble.ttf");
+  font-weight: 500;
+}
 
 * {
   margin: 0;
@@ -22,6 +27,7 @@
 
 body {
   font-family: "IM_Hyemin-Regular";
+  margin: 0;
 }
 
 h1 {

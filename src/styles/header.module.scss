@@ -1,0 +1,55 @@
+.header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 999;
+  background-color: rgba(255, 237, 173, 1);
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 237, 173, 1) 80%,
+    rgba(255, 237, 173, 0.1)
+  );
+  img {
+    width: 50px;
+    height: 50px;
+    cursor: pointer;
+  }
+  .user {
+    width: 40px;
+    height: 40px;
+  }
+  .title {
+    display: inline-block;
+    padding: 30px;
+    color: #fff;
+    font-feature-settings:
+      "clig" off,
+      "liga" off;
+    font-family: "Super-Bubble";
+    font-size: 50px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 45px; /* 90% */
+    text-transform: uppercase;
+    cursor: pointer;
+  }
+}
+@media (max-width: 560px) {
+  .header {
+    img {
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
+    .user {
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+    }
+  }
+}

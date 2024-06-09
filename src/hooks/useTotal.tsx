@@ -23,7 +23,7 @@ function useTotal(id: number) {
       setData(data.data);
     }
   }, [data]);
-  return { isLoading, data, isFetching, refetch };
+  return { isLoading, data, isFetching, refetch2: refetch };
 }
 
 export default useTotal;

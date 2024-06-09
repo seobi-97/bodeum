@@ -3,7 +3,8 @@ import { ChatShareData } from "@/types/chat";
 import { UpdateUserData } from "@/types/user";
 
 export const api = axios.create({
-  baseURL: "http://3.34.172.192:8080",
+  // baseURL: "http://3.34.172.192:8080",
+  baseURL: "https://serverbodeum.shop/",
   headers: {
     "Content-Type": "application/json;charset=UTF-8",
     Accept: "application/json,",
@@ -48,6 +49,11 @@ const apis = {
   // nickName: 유저 닉네임, favoriteFluffyName: 선호하는 캐릭터
   update: (id: number, userData: UpdateUserData) =>
     api.put(`/update/${id}`, userData),
+
+  // 조회수 증가
+  postViews: (id: number) => api.post(`/chat/views/${id}`),
+  // 조회수 조회
+  getViews: (id: number) => api.get(`/chat/views/${id}`),
 };
 
 export default apis;

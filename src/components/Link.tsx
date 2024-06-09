@@ -1,37 +1,47 @@
 import React from "react";
 import { useRecoilValue } from "recoil";
-import { usePathname } from "next/navigation";
 import styles from "../styles/link.module.scss";
 import userSelector from "@/recoil/selector/userSelector";
+import useDelete from "@/hooks/useDelete";
 
 interface Type {
   handleOpen: (chatId: string) => void;
   chatId: number;
   userId: number;
+  handleToast: () => void;
 }
-function Link({ handleOpen, chatId, userId }: Type) {
+function Link({ handleOpen, chatId, userId, handleToast }: Type) {
   const id = useRecoilValue(userSelector).userId;
-  const router = usePathname();
   const baseUrl = "http://localhost:3000";
+  const { refetch } = useDelete(chatId);
   const handleCopyClipBoard = async (text: string) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert("클립보드에 링크가 복사되었어요.");
+      handleToast();
     } catch (e) {
       console.log(e);
     }
+  };
+  const deleteButton = () => {
+    refetch();
+    // window.location.replace("/community");
+    window.location.reload();
   };
   return (
     <div className={styles.box}>
       {id === userId ? (
         <>
-          <div>삭제하기</div>
+          <div role="none" className={styles.delete} onClick={deleteButton}>
+            삭제하기
+          </div>
           <div className={styles.line} />
         </>
       ) : null}
       <div
         className={styles.copy}
-        onClick={() => handleCopyClipBoard(`${baseUrl}${router}`)}
+        onClick={() =>
+          handleCopyClipBoard(`${baseUrl}/communityShare?id=${chatId}`)
+        }
         role="none"
       >
         링크복사

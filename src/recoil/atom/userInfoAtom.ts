@@ -2,8 +2,14 @@ import { atom } from "recoil";
 import { recoilPersist } from "recoil-persist";
 
 // 기본 설정
-// localStorage에 저장되며, key 이름은 recoil-persist
-const { persistAtom } = recoilPersist();
+// sessionStorage 저장되며, key 이름은 userInfo
+
+const sessionStorage =
+  typeof window !== "undefined" ? window.sessionStorage : undefined;
+const { persistAtom } = recoilPersist({
+  key: "userInfo",
+  storage: sessionStorage,
+});
 
 const userState = atom({
   key: "loginState",

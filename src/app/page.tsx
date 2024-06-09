@@ -13,31 +13,10 @@ import Footer from "../components/main/Footer";
 import useGetCharacter from "@/hooks/useGetCharacter";
 import charactersSelector from "@/recoil/selector/charactersSelector";
 import characterState from "@/recoil/atom/characterAtom";
-
+import { useDeleteChat, useDeleteChatShare } from "@/hooks/useDeleteStorage";
+import CHARACTER from "@/data/Character";
 // 캐릭터 임시 데이터
 // 이미지 경로만 하드코딩 이용
-const CHARACTER = [
-  {
-    name: "토비",
-    src: "/images/ch_tobi.png",
-    info: "따뜻한 마음을 지닌 활발한 토비 당신에게 즐거운 웃음과 감동을 전해 밝게 비춰드릴게요",
-  },
-  {
-    name: "마이로",
-    src: "/images/ch_myro.png",
-    info: "이성적이면서 현실적인 판단을 당신에게 전달해드릴 똑똑한 조언자 마이로에요",
-  },
-  {
-    name: "루미나",
-    src: "/images/ch_rumina.png",
-    info: "감성적이고 창의적인 루미나 당신이 예상치 못한 답변으로 감동을 전달해드릴게요",
-  },
-  {
-    name: "블리",
-    src: "/images/ch_bly.png",
-    info: "누구에게나 사랑을 전달하며 온 세상을 따뜻하게 만드는 블리 당신에게 희망을 드릴게요",
-  },
-];
 
 export default function MainPage() {
   const [isLogin, setLogin] = useState(false);
@@ -57,7 +36,10 @@ export default function MainPage() {
     if (LOGINSTATUS) setLogin(true);
     else setLogin(false);
   }, [LOGINSTATUS, CHARACTERSSTATUS]);
-
+  useEffect(() => {
+    useDeleteChat();
+    useDeleteChatShare();
+  }, []);
   const LoginKakaoFn = () => {
     window.location.href =
       "https://kauth.kakao.com/oauth/authorize?client_id=e1ca1242637d6f7e5d769861cbf80017&redirect_uri=http://localhost:3000/success&response_type=code";
@@ -113,10 +95,10 @@ export default function MainPage() {
         <div className={styles.bgImgContainer}>
           <div className={styles.leftBox}>
             <Image
-              src="/images/mian_logo.png"
+              src="/images/main_logo.svg"
               alt="메인 로고"
               width="350"
-              height="64"
+              height="89"
               id={styles.logo}
             />
             <div className={styles.desc}>

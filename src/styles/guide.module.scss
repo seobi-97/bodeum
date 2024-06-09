@@ -1,0 +1,73 @@
+.main {
+  .background {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    background-image: url("../../public/images/background.png");
+    background-size: cover;
+    min-height: 100vh;
+    width: 100vw;
+    height: 100%;
+    .backdrop {
+      display: flex;
+      position: relative;
+      height: 100%;
+      .container {
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        .box {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          width: 80vw;
+          height: 41vh;
+          min-height: 290px;
+          flex-shrink: 0;
+          border-radius: 40px;
+          border: 2px solid #fff;
+          box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.15);
+          .character {
+            position: absolute;
+            top: -350px;
+            z-index: 5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 400px;
+            height: 400px;
+            img {
+              width: 100%;
+            }
+          }
+          .topSection {
+            display: flex;
+            flex-direction: row;
+            .scrap {
+            }
+            .name {
+            }
+            .top2 {
+            }
+          }
+          .text {
+          }
+          .input {
+            display: flex;
+            flex-direction: row;
+            img {
+              .send {
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

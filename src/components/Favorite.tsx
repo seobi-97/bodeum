@@ -20,7 +20,7 @@ function Favorite({ active, selectChar }: EditProps) {
         onClick={() => selectChar(1)}
         className={active === 1 ? styles.active : ""}
       >
-        <p>마이노</p>
+        <p>마이로</p>
       </div>
       <div
         role="none"
