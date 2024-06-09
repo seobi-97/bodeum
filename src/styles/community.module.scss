@@ -307,6 +307,7 @@
   .board {
     display: flex;
     flex-direction: column;
+    margin-top: 100px;
     .box {
       width: 80vw;
       .top {
@@ -389,6 +390,12 @@
         width: 330px;
         height: 130px;
         font-size: 12px;
+      }
+      .finish {
+        position: absolute;
+        top: -40px;
+        right: 20px;
+        z-index: 9999;
       }
     }
   }

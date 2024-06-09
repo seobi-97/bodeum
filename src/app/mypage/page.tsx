@@ -165,7 +165,10 @@ function MyPage() {
                         id={`board_${val.chatId}`}
                       >
                         <div className={styles.top}>
-                          <img src="/images/userIcon.svg" alt="userIcon" />
+                          <img
+                            src={val.imageURL || "/images/userIcon.svg"}
+                            alt="userIcon"
+                          />
                           <div className={styles.topRight}>
                             <div className={styles.nickName}>
                               {val.nickname}

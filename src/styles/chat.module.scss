@@ -16,6 +16,14 @@ $green1: #e7ffaa;
     transform: translateZ(0);
   }
 }
+.textArea {
+  width: 100%;
+  min-height: 50px;
+  max-height: 300px;
+  overflow: auto;
+  resize: none; /* 사용자가 크기 조정을 하지 못하게 설정 */
+  box-sizing: border-box; /* padding과 border를 포함하여 크기 계산 */
+}
 .black {
   display: flex;
   flex-direction: column;
@@ -155,6 +163,8 @@ $green1: #e7ffaa;
     }
   }
   .top {
+    font-family: "Pretendard-Medium";
+    font-size: 15px;
     position: absolute;
     top: 20px;
     right: 60px;
@@ -185,7 +195,6 @@ $green1: #e7ffaa;
   border-radius: 40px;
   background: rgba(255, 255, 255, 0.3);
   box-shadow: 5px 5px 20px 0px rgba(124, 137, 109, 0.2);
-
   input {
     width: 100%;
     height: 80px;
@@ -195,13 +204,15 @@ $green1: #e7ffaa;
     background: #dae4af;
     font-size: 20px;
   }
-  textarea {
+  .input {
     width: 100%;
-    height: 80px;
-    padding: 25px 30px;
     border-radius: 30px;
     border: 1px solid #fff;
     background: #dae4af;
+  }
+  textarea {
+    width: 90%;
+    height: 80px;
     font-size: 20px;
   }
   input::placeholder {
@@ -279,12 +290,18 @@ $green1: #e7ffaa;
     align-items: center;
     cursor: pointer;
     p {
+      font-family: "Pretendard-Medium";
+      font-size: 15px;
       color: #fff;
-      font-size: 18px;
-      font-weight: 700;
     }
     img {
       padding: 0 7px;
+    }
+
+    button {
+      font-family: "Pretendard-Medium";
+      font-size: 15px;
+      color: #fff;
     }
   }
   .top2 {
@@ -304,6 +321,11 @@ $green1: #e7ffaa;
     }
     img {
       padding: 0 7px;
+    }
+    button {
+      font-family: "Pretendard-Medium";
+      font-size: 15px;
+      color: #fff;
     }
   }
   .input {
@@ -428,20 +450,28 @@ $green1: #e7ffaa;
     text-transform: uppercase;
     margin-bottom: 5vh;
   }
+  .bodeum {
+    font-family: "Super-Bubble";
+    font-size: 50px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 45px; /* 90% */
+    text-transform: uppercase;
+    color: #fff;
+  }
   .header {
     color: #333;
     font-feature-settings:
       "clig" off,
       "liga" off;
-    //font-family: IM_Hyemin;
+    font-family: "IM_Hyemin-Bold";
     font-size: 22px;
-    font-style: normal;
-    font-weight: 400;
     line-height: 45px; /* 173.077% */
     text-transform: uppercase;
     margin-bottom: 10px;
     margin-top: 60px;
     p {
+      font-family: "IM_Hyemin-Bold";
       line-height: 35px;
     }
   }
@@ -484,6 +514,9 @@ $green1: #e7ffaa;
   background: rgba(255, 255, 255, 0.3);
   backdrop-filter: blur(25px);
   cursor: pointer;
+  h3 {
+    font-family: "IM_Hyemin-Bold";
+  }
 }
 .active {
   background-color: rgba(255, 255, 255, 0.5);
@@ -498,6 +531,7 @@ $green1: #e7ffaa;
   width: 100vw;
 }
 .sharebutton {
+  font-family: "Pretendard-Medium";
   display: flex;
   justify-content: center;
   align-items: center;
@@ -572,7 +606,7 @@ $green1: #e7ffaa;
       max-width: 105px;
       max-height: 105px;
       top: -20%;
-      left: 50px;
+      left: 60px;
     }
     .scrap {
       display: none;
@@ -581,7 +615,7 @@ $green1: #e7ffaa;
       position: absolute;
       width: 150px;
       top: -15%;
-      left: 120px;
+      left: 130px;
       background: none;
       font-size: 30px;
     }
@@ -639,6 +673,7 @@ $green1: #e7ffaa;
     }
     .text,
     .text2 {
+      max-width: 350px;
       background: rgba(255, 255, 255, 0.1);
       border-radius: 20px;
       padding: 10px 25px 10px 25px;
@@ -647,14 +682,23 @@ $green1: #e7ffaa;
       left: 5%;
     }
     .input {
+      display: flex;
       input,
       textarea {
-        height: 60px;
+        height: 50px;
         font-size: 16px;
+        overflow: hidden;
+        padding: 14px 17px;
+      }
+      .sendBox {
+        position: relative;
+        display: flex;
+        align-items: center;
       }
       .send {
-        position: absolute;
-        top: 5px;
+        position: relative;
+        top: 0px;
+        bottom: 10px;
         width: 40px;
         height: 50px;
       }
@@ -714,10 +758,25 @@ $green1: #e7ffaa;
     }
   }
 }
+@media (min-width: 560px) {
+  .prev {
+    display: none;
+  }
+}
 @media (max-width: 560px) {
   .sliderbackdrop {
     .chatSlider2 {
       justify-content: flex-start;
     }
+  }
+  .finish {
+    display: none;
+  }
+  .prev {
+    display: flex;
+    position: absolute;
+    top: -100px;
+    left: 10px;
+    cursor: pointer;
   }
 }

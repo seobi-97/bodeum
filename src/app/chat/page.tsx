@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
+import { useRouter } from "next/navigation";
 import characterSelector from "@/recoil/selector/characterSelector";
 import styles from "../../styles/chat.module.scss";
 import ModalExit from "../../components/ModalExit";
@@ -16,7 +17,9 @@ interface JSONDATA {
   id: number;
   text: string;
 }
-function chat() {
+
+function Chat() {
+  const router = useRouter();
   const [text, setText] = useState<string>("");
   const [mobile, setMobile] = useState(false);
   const [message, setMessages] = useState<JSONDATA[]>([]);
@@ -25,62 +28,59 @@ function chat() {
   const [imgNum, setImgNum] = useState(9);
   const [charName, setCharName] = useState("");
   const isClient = typeof window === "object";
+  const msgBoxRef = useRef(null);
   const getSize = () => {
     return { width: isClient ? window.innerWidth : undefined };
   };
   const [windowSize, setWindowSize] = useState(getSize);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  // 선택한 캐릭터의 정보(id)
   const CHARACTERSTATUS = useRecoilValue(characterSelector);
   const CHAT = useRecoilValue(chatSelector);
-
-  // 현재 recoil에 저장된 채팅 내용
   const setChat = useSetRecoilState(chatState);
 
-  // 화면 진입 시, 인트로 대화
   const defaultMessage = `안녕 나는 ${charName}야. 만나서 반가워. 무슨 고민이 있어서 왔니?`;
-  // api 통신
   const { isLoading, data, isFetching, refetch } = useChat(
     CHARACTERSTATUS.id,
     text,
   );
-  // x 아이콘 클릭 시 모달 open
+
   const ExitClick = () => {
     setModalOpen(!modalOpen);
   };
 
-  // 채팅창 펼치기
   const handleOpen = () => {
     console.log("open");
     setOpen(!open);
   };
-  // 채팅 글쓰기
+
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
   };
+
   const handelResize = () => {
     setWindowSize(getSize());
   };
-  // 뒤로가기 버튼 클릭 시, 모달 오픈
+
   const handlePopState = () => {
     setModalOpen(true);
   };
+
   useEffect(() => {
     useDeleteChat();
   }, []);
+  // useEffect(() => {
+  //   scrollToBottom();
+  // }, [message]);
+
   useEffect(() => {
-    // history에 stack을 하나 쌓는다.
-    // 그 뒤, 뒤로 가기 이벤트가 실행되면서 원하는 이벤트가 실행된다.
     window.history.pushState(null, "", window.location.href);
-    window.addEventListener("popstate", () => {
-      handlePopState();
-    });
+    window.addEventListener("popstate", handlePopState);
     return () => {
-      window.removeEventListener("popstate", () => {
-        handlePopState();
-      });
+      window.removeEventListener("popstate", handlePopState);
     };
-  });
+  }, []);
+
   useEffect(() => {
     if (windowSize.width !== undefined && windowSize.width < 1000) {
       setMobile(true);
@@ -88,11 +88,12 @@ function chat() {
       setMobile(false);
     }
     window.addEventListener("resize", handelResize);
-    return () => window.removeEventListener("resize", handelResize);
-  });
+    return () => {
+      window.removeEventListener("resize", handelResize);
+    };
+  }, [windowSize]);
+
   useEffect(() => {
-    // recoil값을 그대로 쓰면, 해당 값이 서버와 클라이언트가 다르다는 오류가 발생한다.
-    // 따라서 useState, useEffect로 핸들링 해준다.
     if (CHARACTERSTATUS) {
       setImgNum(CHARACTERSTATUS.id);
       setCharName(CHARACTERSTATUS.name);
@@ -105,29 +106,53 @@ function chat() {
         ]);
       }
     }
+  }, [CHARACTERSTATUS, CHAT, setChat]);
 
-    // Chat gpt 답변이 있으면
-    if (data !== undefined) {
-      console.log(data);
-      setChat([...CHAT, { id: 1, text: data.data?.answer }]);
+  useEffect(() => {
+    if (data && data.data?.answer) {
+      setChat((prevChat: JSONDATA[]) => [
+        ...prevChat,
+        { id: 1, text: data.data.answer },
+      ]);
     }
+  }, [data, setChat]);
 
-    // 첫 화면에서 charName을 가져오고 -> recoil에 defaultMessage 저장
-    // 해당 메세지를 띄우고, 답변을 받으면 다시 업데이트
-  }, [data, CHARACTERSTATUS]);
   useEffect(() => {
     setMessages(CHAT);
   }, [CHAT]);
+
   const sendMsg = () => {
-    setChat([...CHAT, { id: 0, text }]);
+    setChat((prevChat: JSONDATA[]) => [...prevChat, { id: 0, text }]);
     setText("");
-    refetch();
+    refetch(); // API 요청을 여기서 수행
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+    }
   };
+
   const activeEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && text !== "") {
       sendMsg();
     }
   };
+
+  const homeClick = () => {
+    router.push("/");
+  };
+
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${
+        textareaRef.current.scrollHeight - 20
+      }px`;
+    }
+  };
+
+  useEffect(() => {
+    adjustTextareaHeight();
+  }, [text]);
+
   if (isLoading) console.log("로딩중");
   return (
     <div className={styles.main}>
@@ -158,17 +183,11 @@ function chat() {
           {open ? (
             <div className={styles.container2}>
               <div className={styles.box2}>
-                <div
-                  className={styles.top}
-                  role="none"
-                  onClick={() => {
-                    handleOpen();
-                  }}
-                >
+                <div className={styles.top} role="none" onClick={handleOpen}>
                   <img src="/images/arrow.svg" alt="arrow" />
                   <p>접기</p>
                 </div>
-                <div className={styles.msgBox}>
+                <div className={styles.msgBox} ref={msgBoxRef}>
                   {message?.map((msg: JSONDATA, idx: number) => (
                     <div key={idx}>
                       {msg.id === 1 ? (
@@ -183,21 +202,17 @@ function chat() {
                     </div>
                   ))}
                 </div>
-
                 <div className={styles.input}>
                   <textarea
+                    ref={textareaRef}
                     value={text}
                     onChange={onChange}
                     onKeyUp={activeEnter}
+                    onInput={adjustTextareaHeight}
                     placeholder="내용을 입력해주세요"
+                    className={styles.textarea}
                   />
-                  {/* <input name="text" value={text} onChange={onInputChange} /> */}
-                  <div
-                    role="none"
-                    onClick={() => {
-                      sendMsg();
-                    }}
-                  >
+                  <div role="none" onClick={sendMsg}>
                     <img
                       className={styles.send}
                       src="/images/send.svg"
@@ -210,6 +225,9 @@ function chat() {
           ) : (
             <div className={styles.container}>
               <div className={styles.box}>
+                <div className={styles.prev} onClick={homeClick} role="none">
+                  <img src="/images/blackPrev.svg" alt="prev" />
+                </div>
                 <div className={styles.character}>
                   <img src={`/images/character${imgNum}.svg`} alt="character" />
                 </div>
@@ -219,74 +237,63 @@ function chat() {
                 <div className={styles.name}>
                   <p>{charName}</p>
                 </div>
-                <div
-                  className={styles.top}
-                  role="none"
-                  onClick={() => {
-                    handleOpen();
-                  }}
-                >
+                <div className={styles.top} role="none" onClick={handleOpen}>
                   <img src="/images/arrow.svg" alt="arrow" />
                   <p>펼치기</p>
                 </div>
-                {
-                  // 모바일 반응형 화면일 때, 일반 펼쳐진 화면과 디자인이 같음
-                  // 그리고 loading,fetching중 일때 애니메이션 보여주기
-                  mobile ? (
-                    <div className={styles.msgBox}>
-                      {message?.map((msg: JSONDATA, idx: number) => (
-                        <div key={idx}>
-                          {msg.id === 1 ? (
-                            <div className={styles.msgType0}>
-                              <span>{msg.text}</span>
-                            </div>
-                          ) : (
-                            <div className={styles.msgType1}>
-                              <span>{msg.text}</span>
-                            </div>
-                          )}
-                        </div>
-                      ))}
-                      {isLoading || isFetching ? (
-                        <div className={styles.msgType2}>
-                          <Dots />
-                        </div>
-                      ) : null}
-                    </div>
-                  ) : (
-                    <div className={styles.text}>
-                      {isLoading || isFetching ? (
-                        <div className={styles.textDots}>
-                          <Dots />
-                        </div>
-                      ) : (
-                        <p>
-                          {message.length === 0
-                            ? defaultMessage
-                            : message.findLast(element => element.id === 1)
-                                ?.text}
-                        </p>
-                      )}
-                    </div>
-                  )
-                }
+                {mobile ? (
+                  <div className={styles.msgBox}>
+                    {message?.map((msg: JSONDATA, idx: number) => (
+                      <div key={idx}>
+                        {msg.id === 1 ? (
+                          <div className={styles.msgType0}>
+                            <span>{msg.text}</span>
+                          </div>
+                        ) : (
+                          <div className={styles.msgType1}>
+                            <span>{msg.text}</span>
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                    {isLoading || isFetching ? (
+                      <div className={styles.msgType2}>
+                        <Dots />
+                      </div>
+                    ) : null}
+                  </div>
+                ) : (
+                  <div className={styles.text}>
+                    {isLoading || isFetching ? (
+                      <div className={styles.textDots}>
+                        <Dots />
+                      </div>
+                    ) : (
+                      <p>
+                        {message.length === 0
+                          ? defaultMessage
+                          : message.findLast(element => element.id === 1)?.text}
+                      </p>
+                    )}
+                  </div>
+                )}
                 <div className={styles.input}>
                   <textarea
+                    ref={textareaRef}
                     value={text}
                     onChange={onChange}
                     onKeyUp={activeEnter}
+                    onInput={adjustTextareaHeight}
                     placeholder="내용을 입력해주세요"
+                    className={styles.textarea}
                   />
-                  <div
-                    role="none"
-                    onClick={() => {
-                      sendMsg();
-                    }}
-                  >
+                  <div role="none" className={styles.sendBox}>
                     <img
+                      onClick={sendMsg}
                       className={styles.send}
                       src="/images/send.svg"
                       alt="send"
+                      role="none"
                     />
                   </div>
                 </div>
@@ -299,4 +306,4 @@ function chat() {
   );
 }
 
-export default chat;
+export default Chat;

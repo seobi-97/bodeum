@@ -98,7 +98,7 @@ function guide() {
               <>
                 <div className={styles.top} />
                 <div className={styles.input}>
-                  <input type="text" placeholder="내용을 입력해주세요" />
+                  <textarea placeholder="내용을 입력해주세요" />
                   <div>
                     <img
                       className={styles.send}
@@ -148,7 +148,7 @@ function guide() {
                 </p>
               </div>
               <div className={styles.input}>
-                <input type="text" placeholder="내용을 입력해주세요" />
+                <textarea placeholder="내용을 입력해주세요" />
                 {/* <input name="text" value={text} onChange={onInputChange} /> */}
                 <div role="none">
                   <img

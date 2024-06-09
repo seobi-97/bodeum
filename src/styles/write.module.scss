@@ -49,6 +49,16 @@
     text-transform: uppercase;
     margin-bottom: 5vh;
   }
+  .bodeum {
+    font-family: "Super-Bubble";
+    font-size: 50px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 45px; /* 90% */
+    text-transform: uppercase;
+    color: #fff;
+    margin-top: 20px;
+  }
   .container {
     display: flex;
     flex-direction: row;
@@ -58,7 +68,7 @@
     height: 60vh;
     border-radius: 20px;
     padding: 20px;
-    margin-top: 100px;
+    margin-top: 70px;
     margin-bottom: 20px;
     .left {
       width: 50%;
@@ -75,6 +85,10 @@
         img {
           margin-left: 5px;
           margin-right: 10px;
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          box-shadow: rgba(0, 0, 0, 0.06) 0px 0px 4px 0px;
         }
       }
       .leftBottom {
@@ -89,6 +103,7 @@
       border-radius: 10px;
       padding: 20px;
       .title {
+        font-family: "IM_Hyemin-Bold";
         height: 30%;
         padding-left: 5px;
       }
@@ -106,16 +121,19 @@
     flex-direction: row;
     justify-content: center;
     margin-top: 5vh;
+
     .button1 {
       border-radius: 20px;
       background: #fff;
     }
     .button2 {
+      color: #fff;
       border-radius: 20px;
       background: #a991e7;
     }
   }
   button {
+    font-family: "Pretendard-Medium";
     display: flex;
     width: 171.852px;
     height: 48px;

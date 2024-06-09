@@ -17,11 +17,9 @@ import Toast from "@/components/toast";
 import boardDetailSelector from "@/recoil/selector/boardDetailSelector";
 import { useGetViews, usePostViews } from "@/hooks/useViews";
 
-function community() {
+function Community() {
   const { isLoading, data } = useCommunity();
-  console.log(data);
   const BOARD = useRecoilValue(communitySelector);
-  console.log(BOARD);
   const [board, setBoard] = useState([]);
   const [time, setTime] = useState<string>();
   const [open, setOpen] = useState<string | null>(null);
@@ -33,12 +31,12 @@ function community() {
   const boardID = useRecoilValue(boardDetailSelector);
   const [boardId, setId] = useState(boardID);
   const [views, setViews] = useState(0);
-  // 조회수 조회
+
   const { GetView, GetRefetch } = useGetViews(boardId);
-  console.log(views, GetView);
-  // 조회수 증가
   const { PostRefetch } = usePostViews(boardId);
+
   const [mobile, setMobile] = useState(false);
+  console.log(mobile);
   const isClient = typeof window === "object";
   const getSize = () => {
     return { width: isClient ? window.innerWidth : undefined };
@@ -47,9 +45,8 @@ function community() {
   const handelResize = () => {
     setWindowSize(getSize());
   };
-  // innerWidth 감지
+
   useEffect(() => {
-    // windowSize.width가 undefined일수도 있기 때문에 조건문에 추가
     if (windowSize.width !== undefined && windowSize.width < 1000) {
       setMobile(true);
     } else {
@@ -62,29 +59,22 @@ function community() {
   useEffect(() => {
     setTime(useGetTime());
   });
+
   useEffect(() => {
     if (BOARD) {
       setBoard(BOARD);
-      console.log(BOARD);
     }
-  }, [BOARD]); // 의존성 배열에 BOARD.data 추가
+  }, [BOARD, data]);
+
   useEffect(() => {
     if (boardID) {
       setId(boardID);
       const image = BOARD.filter(
         (val: GetCommunity) => val.chatId === parseInt(boardID, 10),
       );
-      console.log("Board", BOARD, boardID);
-      console.log("image", image);
-      setImageURL(image[0].imageURL);
+      if (image.length > 0) setImageURL(image[0].imageURL);
     }
   }, [boardID]);
-  useEffect(() => {
-    if (GetView) {
-      console.log(GetView.data.views);
-      setViews(GetView.data.views);
-    }
-  }, [GetView]);
 
   const handleToast = () => {
     setToast(true);
@@ -92,24 +82,32 @@ function community() {
       setToast(false);
     }, 1000);
   };
+
   const handleOpen = (chatId: string) => {
     setOpen(open === chatId ? null : chatId);
   };
-  const openPopup = (id: number) => {
-    console.log("id", id);
+
+  const openPopup = async (id: number) => {
     setModalOpen(true);
     setId(id);
     setBoardDetail(id);
-    PostRefetch();
-    GetRefetch();
+
+    // 조회수 증가 및 갱신된 조회수 가져오기
+    await PostRefetch();
+    await GetRefetch();
   };
+
+  useEffect(() => {
+    if (GetView && GetView.data) {
+      setViews(GetView.data.views);
+    }
+  }, [GetView]);
+
   const closePopup = () => {
     setModalOpen(false);
     setBoardDetail("");
   };
-  useEffect(() => {
-    GetRefetch();
-  }, [boardId]);
+
   return (
     <div className={styles.background}>
       {toast && <Toast text="링크를 클립보드에 복사했습니다." />}
@@ -123,14 +121,7 @@ function community() {
         />
       ) : null}
       <div className={styles.container}>
-        {mobile ? (
-          <Header community modal={false} />
-        ) : (
-          <Header community modal={false} />
-        )}
-        {/* <div className={styles.search}>
-          <input placeholder="검색어를 입력하세요." />
-        </div> */}
+        <Header community modal={false} />
         <div className={styles.board}>
           {isLoading ? (
             <>
@@ -214,4 +205,4 @@ function community() {
   );
 }
 
-export default community;
+export default Community;

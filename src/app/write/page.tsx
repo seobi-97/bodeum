@@ -10,7 +10,6 @@ import useChatShare from "@/hooks/useChatShare";
 import characterSelector from "@/recoil/selector/characterSelector";
 import useGetTime from "@/hooks/useGetTime";
 import ModalExit from "@/components/ModalExit";
-import Header from "@/components/header";
 import Toast from "@/components/toast";
 
 interface JSONDATA {
@@ -28,7 +27,7 @@ function write() {
   const USER = useRecoilValue(userSelector);
   const USERID = useRecoilValue(userSelector).userId;
   const CHARACTERNAME = useRecoilValue(characterSelector).name;
-
+  const [imageURL, setImageURL] = useState("");
   const [showToast, setShowToast] = useState<boolean>(false);
   const router = useRouter();
 
@@ -68,6 +67,7 @@ function write() {
   useEffect(() => {
     if (USER) {
       setNickname(USER.nickName);
+      setImageURL(USER.imageURL);
     }
   }, [USER]);
   useEffect(() => {
@@ -110,6 +110,9 @@ function write() {
       refetch();
     } else setModalOpen(true);
   };
+  const homeClick = () => {
+    router.push("/");
+  };
   if (isLoading) console.log("로딩중");
   else if (isFetching) console.log("패칭중");
   return (
@@ -138,11 +141,13 @@ function write() {
             )}
           </div>
         )}
-        <Header community={false} modal={false} />
+        <div className={styles.bodeum} role="none" onClick={homeClick}>
+          Bodeum
+        </div>
         <div className={styles.container}>
           <div className={styles.left}>
             <div className={styles.leftTop}>
-              <img src="/images/userIcon.svg" alt="" />
+              <img src={imageURL || "/images/userIcon.svg"} alt="" />
               <div>
                 <p>{nickname}</p>
               </div>

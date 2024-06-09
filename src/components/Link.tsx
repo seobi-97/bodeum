@@ -13,7 +13,7 @@ interface Type {
 function Link({ handleOpen, chatId, userId, handleToast }: Type) {
   const id = useRecoilValue(userSelector).userId;
   // const baseUrl = "http://localhost:3000";
-  const baseUrl = "https://bodeum.vercel.app/";
+  const baseUrl = "https://bodeum.vercel.app";
   const { refetch } = useDelete(chatId);
   const handleCopyClipBoard = async (text: string) => {
     try {

@@ -12,7 +12,6 @@ import MODAL from "../../constants/Modal";
 
 import chatState from "@/recoil/atom/chat";
 import chatShareState from "@/recoil/atom/chatShare";
-import Header from "@/components/header";
 
 interface JSONDATA {
   id: number;
@@ -109,6 +108,10 @@ function chatShare() {
   };
   // x 아이콘 클릭 시 모달 open
   const ExitClick = () => {
+    if (ALL_CHAT.length === 1) {
+      setChatShare(ALL_CHAT[0]);
+      setNormal(false);
+    }
     setModalOpen(!modalOpen);
     setCommunity(false);
     setHome(false);
@@ -191,14 +194,13 @@ function chatShare() {
             onClick={onSideClick}
             onKeyDown={() => onSideClick}
           />
-          <div role="none" onClick={homeClick}>
-            <Header community={false} modal />
+          <div className={styles.bodeum} role="none" onClick={homeClick}>
+            Bodeum
           </div>
 
           {/* <div className={styles.title}>BODEUM</div> */}
           <div className={styles.header}>
-            <p>저장 버튼을 누른 대화 중</p>
-            <p>공유하고 싶은 답변을 선택해주세요.</p>
+            <p>저장 버튼을 누른 대화 중 공유하고 싶은 답변을 선택해주세요.</p>
           </div>
           {ALL_CHAT.length < 4 || mobile ? (
             <div
@@ -243,7 +245,7 @@ function chatShare() {
               onClick={communityClick}
               style={{ zIndex: modalOpen ? "1" : "999" }}
             >
-              <p>커뮤니티</p>
+              커뮤니티
             </div>
             <div
               className={styles.sharebutton}
