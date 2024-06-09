@@ -19,7 +19,7 @@ function Header({ community, modal }: DATA) {
     // 회원가입 하지 않은 경우
     if (!LOGINSTATUS)
       window.location.href =
-        "https://kauth.kakao.com/oauth/authorize?client_id=e1ca1242637d6f7e5d769861cbf80017&redirect_uri=http://localhost:3000/success&response_type=code";
+        "https://kauth.kakao.com/oauth/authorize?client_id=e1ca1242637d6f7e5d769861cbf80017&redirect_uri=https://bodeum.vercel.app/success&response_type=code";
     else router.push("/mypage");
   };
   const homeButton = () => {
