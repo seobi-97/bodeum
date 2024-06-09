@@ -141,7 +141,7 @@ function Chat() {
   };
 
   const adjustTextareaHeight = () => {
-    if (textareaRef.current) {
+    if (textareaRef.current && mobile) {
       textareaRef.current.style.height = "auto";
       textareaRef.current.style.height = `${
         textareaRef.current.scrollHeight - 20
