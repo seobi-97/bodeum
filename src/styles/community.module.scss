@@ -289,6 +289,10 @@
   top: 50px;
   display: flex;
   cursor: pointer;
+  z-index: 100000;
+  p {
+    font-family: "Pretendard-Medium";
+  }
 }
 @media (max-width: 1000px) {
   .header {

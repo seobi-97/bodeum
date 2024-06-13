@@ -27,8 +27,8 @@ function ModalExit({ setModalOpen, text, button1, button2 }: ModalChatProps) {
   return (
     <div className={styles.container}>
       <div className={styles.text}>
-        {text.map(val => (
-          <p>{val}</p>
+        {text.map((val, index) => (
+          <p key={index}>{val}</p>
         ))}
       </div>
       <div className={styles.buttonWrap}>

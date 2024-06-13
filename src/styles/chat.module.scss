@@ -16,14 +16,6 @@ $green1: #e7ffaa;
     transform: translateZ(0);
   }
 }
-.textArea {
-  width: 100%;
-  min-height: 50px;
-  max-height: 300px;
-  overflow: auto;
-  resize: none; /* 사용자가 크기 조정을 하지 못하게 설정 */
-  box-sizing: border-box; /* padding과 border를 포함하여 크기 계산 */
-}
 .black {
   display: flex;
   flex-direction: column;
@@ -67,6 +59,14 @@ $green1: #e7ffaa;
   height: 100vh;
   background-color: rgba(255, 255, 192, 0.1);
   backdrop-filter: blur(10px);
+  textarea {
+    width: 100%;
+    min-height: 50px;
+    max-height: 300px;
+    overflow: auto;
+    resize: none; /* 사용자가 크기 조정을 하지 못하게 설정 */
+    box-sizing: border-box; /* padding과 border를 포함하여 크기 계산 */
+  }
 }
 .character {
   position: absolute;
@@ -206,14 +206,16 @@ $green1: #e7ffaa;
   }
   .input {
     width: 100%;
-    border-radius: 30px;
+    border-radius: 20px;
     border: 1px solid #fff;
     background: #dae4af;
   }
   textarea {
+    padding: 10px;
     width: 90%;
-    height: 80px;
+    height: 50px;
     font-size: 20px;
+    display: flex;
   }
   input::placeholder {
     color: #fff;
@@ -332,10 +334,12 @@ $green1: #e7ffaa;
     position: absolute;
     bottom: 20px;
     width: 85%;
+    height: 100px;
+    padding: 25px 30px;
     .send {
       position: absolute;
-      top: 10px;
-      right: 10px;
+      top: 25px;
+      right: 20px;
       cursor: pointer;
     }
   }
@@ -367,7 +371,6 @@ $green1: #e7ffaa;
   width: 100%;
   max-height: 80%;
   overflow-y: scroll;
-
   @media (min-height: 630px) {
     overflow-y: auto;
     padding-right: 10px;
@@ -382,29 +385,45 @@ $green1: #e7ffaa;
   margin-bottom: 10px;
 }
 .msgType0 {
+  position: relative;
   display: flex;
   align-items: flex-end;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   span {
     display: inline-block;
     padding: 10px 25px 10px 25px;
-    border-radius: 20px;
+    border-radius: 20px 20px 20px 0;
     background: #fff;
     max-width: 50%;
+    font-family: "IM_Hyemin-Bold";
+  }
+  p {
+    font-size: 12px;
+    position: absolute;
+    bottom: -20px;
+    font-family: "Pretendard-Regular";
   }
 }
 .msgType1 {
+  position: relative;
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
   span {
     display: inline-block;
     padding: 10px 25px 10px 25px;
     text-align: center;
-    border-radius: 20px;
+    border-radius: 20px 20px 0px 20px;
     background: #a991e7;
     max-width: 50%;
+    font-family: "IM_Hyemin-Bold";
+  }
+  p {
+    font-size: 12px;
+    bottom: -20px;
+    position: absolute;
+    font-family: "Pretendard-Regular";
   }
 }
 .finish {
@@ -451,6 +470,9 @@ $green1: #e7ffaa;
     margin-bottom: 5vh;
   }
   .bodeum {
+    display: flex;
+    justify-content: center;
+    z-index: 999;
     font-family: "Super-Bubble";
     font-size: 50px;
     font-style: normal;
@@ -576,14 +598,25 @@ $green1: #e7ffaa;
   overflow-wrap: break-word; /* 단어 단위로 줄바꿈 */
   overflow-y: scroll;
 }
+.msgType2 {
+  background-color: #fff;
+  padding: 10px 25px 10px 25px;
+  text-align: center;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  border-radius: 20px 20px 20px 0;
+  background: #fff;
+  width: 100px;
+}
 
 @media (max-width: 1000px) {
   .main {
     background-color: var(--primary-color);
   }
   .background {
-    background-image: url("../../public/images/background.png");
-    background-size: cover;
+    background-image: none;
+    background-color: #dae4af;
   }
   .backdrop {
     display: block;
@@ -591,7 +624,7 @@ $green1: #e7ffaa;
   .container,
   .container2 {
     width: 100vw;
-    height: 80vh;
+    height: 83vh;
     bottom: 0;
     border-radius: 40px 40px 0 0;
   }
@@ -601,11 +634,12 @@ $green1: #e7ffaa;
     width: 100%;
     height: 100%;
     border-radius: 40px 40px 0 0;
+    background-color: #e5ecc7;
     .character {
       position: absolute;
       max-width: 105px;
       max-height: 105px;
-      top: -20%;
+      top: -120px;
       left: 60px;
     }
     .scrap {
@@ -614,7 +648,7 @@ $green1: #e7ffaa;
     .name {
       position: absolute;
       width: 150px;
-      top: -15%;
+      top: -95px;
       left: 130px;
       background: none;
       font-size: 30px;
@@ -713,21 +747,33 @@ $green1: #e7ffaa;
     gap: 10px 0;
     span {
       max-width: 350px;
-      padding: 10px 15px 10px 15px;
+      padding: 16px;
+      font-family: "IM_Hyemin-Bold";
     }
   }
   .msgBox::-webkit-scrollbar {
     display: none;
   }
   .msgType0 {
+    position: relative;
     max-width: 80%;
-    border-radius: 20px;
     font-size: 16px;
     line-height: 26px;
+    overflow: auto;
+    padding-top: 10px;
+    .heart {
+      position: absolute;
+      top: 0px;
+      right: 10px;
+    }
   }
   .msgType1 {
     font-size: 16px;
     line-height: 26px;
+    span {
+      max-width: 350px;
+      padding: 16px;
+    }
   }
   .msgType2 {
     display: flex;
@@ -759,7 +805,8 @@ $green1: #e7ffaa;
   }
 }
 @media (min-width: 560px) {
-  .prev {
+  .prev,
+  .chatfinish {
     display: none;
   }
 }
@@ -772,10 +819,19 @@ $green1: #e7ffaa;
   .finish {
     display: none;
   }
+  .main {
+    position: relative;
+    .chatfinish {
+      display: flex;
+      position: absolute;
+      top: -60px;
+      right: 10px;
+    }
+  }
   .prev {
     display: flex;
     position: absolute;
-    top: -100px;
+    top: -90px;
     left: 10px;
     cursor: pointer;
   }

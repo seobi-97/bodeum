@@ -16,10 +16,12 @@ import Header from "@/components/header";
 import Toast from "@/components/toast";
 import boardDetailSelector from "@/recoil/selector/boardDetailSelector";
 import { useGetViews, usePostViews } from "@/hooks/useViews";
+import userSelector from "@/recoil/selector/userSelector";
 
 function Community() {
   const { isLoading, data } = useCommunity();
   const BOARD = useRecoilValue(communitySelector);
+  const USER = useRecoilValue(userSelector);
   const [board, setBoard] = useState([]);
   const [time, setTime] = useState<string>();
   const [open, setOpen] = useState<string | null>(null);
@@ -83,6 +85,7 @@ function Community() {
     }, 1000);
   };
 
+  // ...버튼 오픈
   const handleOpen = (chatId: string) => {
     setOpen(open === chatId ? null : chatId);
   };
@@ -93,8 +96,16 @@ function Community() {
     setBoardDetail(id);
 
     // 조회수 증가 및 갱신된 조회수 가져오기
-    await PostRefetch();
-    await GetRefetch();
+    if (USER) {
+      // 자신 게시물이 아니면 증가
+      if (USER.userId !== id) {
+        await PostRefetch();
+        await GetRefetch();
+      }
+    } else {
+      await PostRefetch();
+      await GetRefetch();
+    }
   };
 
   useEffect(() => {

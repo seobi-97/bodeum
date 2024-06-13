@@ -12,10 +12,12 @@ import chatState from "@/recoil/atom/chat";
 import chatSelector from "@/recoil/selector/chatSelector";
 import Dots from "@/components/Dots";
 import { useDeleteChat } from "@/hooks/useDeleteStorage";
+import useGetTime from "@/hooks/useGetTime";
 
 interface JSONDATA {
   id: number;
   text: string;
+  time: string;
 }
 
 function Chat() {
@@ -29,6 +31,8 @@ function Chat() {
   const [charName, setCharName] = useState("");
   const isClient = typeof window === "object";
   const msgBoxRef = useRef(null);
+  const [time, setTime] = useState<string>();
+
   const getSize = () => {
     return { width: isClient ? window.innerWidth : undefined };
   };
@@ -67,7 +71,12 @@ function Chat() {
   };
 
   useEffect(() => {
+    setTime(useGetTime().split(" ")[1]);
+  });
+
+  useEffect(() => {
     useDeleteChat();
+    setMessages(CHAT);
   }, []);
   // useEffect(() => {
   //   scrollToBottom();
@@ -97,22 +106,23 @@ function Chat() {
     if (CHARACTERSTATUS) {
       setImgNum(CHARACTERSTATUS.id);
       setCharName(CHARACTERSTATUS.name);
-      if (CHAT.length === 0) {
-        setChat([
-          {
-            id: 1,
-            text: `안녕 나는 ${CHARACTERSTATUS.name}야. 만나서 반가워. 무슨 고민이 있어서 왔니?`,
-          },
-        ]);
-      }
+      console.log(CHAT);
+
+      setChat([
+        {
+          id: 1,
+          text: `안녕 나는 ${CHARACTERSTATUS.name}야. 만나서 반가워. 무슨 고민이 있어서 왔니?`,
+          time: useGetTime().split(" ")[1],
+        },
+      ]);
     }
-  }, [CHARACTERSTATUS, CHAT, setChat]);
+  }, [CHARACTERSTATUS]);
 
   useEffect(() => {
     if (data && data.data?.answer) {
       setChat((prevChat: JSONDATA[]) => [
         ...prevChat,
-        { id: 1, text: data.data.answer },
+        { id: 1, text: data.data.answer, time },
       ]);
     }
   }, [data, setChat]);
@@ -122,17 +132,23 @@ function Chat() {
   }, [CHAT]);
 
   const sendMsg = () => {
-    setChat((prevChat: JSONDATA[]) => [...prevChat, { id: 0, text }]);
-    setText("");
-    refetch(); // API 요청을 여기서 수행
+    if (text.trim() !== "") {
+      setChat((prevChat: JSONDATA[]) => [...prevChat, { id: 0, text, time }]);
+      refetch();
+    } // API 요청을 여기서 수행
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
     }
+    setText("");
   };
 
   const activeEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && text !== "") {
-      sendMsg();
+    e.preventDefault();
+    if (e.key === "Enter") {
+      if (text.trim() !== "") {
+        console.log("text", text);
+        sendMsg();
+      }
     }
   };
 
@@ -149,6 +165,7 @@ function Chat() {
     }
   };
 
+  // text에 따라 높이 조절
   useEffect(() => {
     adjustTextareaHeight();
   }, [text]);
@@ -193,14 +210,21 @@ function Chat() {
                       {msg.id === 1 ? (
                         <div className={styles.msgType0}>
                           <span>{msg.text}</span>
+                          <p>{msg.time}</p>
                         </div>
                       ) : (
                         <div className={styles.msgType1}>
                           <span>{msg.text}</span>
+                          <p>{msg.time}</p>
                         </div>
                       )}
                     </div>
                   ))}
+                  {isLoading || isFetching ? (
+                    <div className={styles.msgType2}>
+                      <Dots />
+                    </div>
+                  ) : null}
                 </div>
                 <div className={styles.input}>
                   <textarea
@@ -212,11 +236,13 @@ function Chat() {
                     placeholder="내용을 입력해주세요"
                     className={styles.textarea}
                   />
-                  <div role="none" onClick={sendMsg}>
+                  <div role="none" className={styles.sendBox}>
                     <img
+                      onClick={() => sendMsg()}
                       className={styles.send}
                       src="/images/send.svg"
                       alt="send"
+                      role="none"
                     />
                   </div>
                 </div>
@@ -224,6 +250,13 @@ function Chat() {
             </div>
           ) : (
             <div className={styles.container}>
+              <div
+                className={styles.chatfinish}
+                role="none"
+                onClick={ExitClick}
+              >
+                <img src="/images/x.svg" alt="x" />
+              </div>
               <div className={styles.box}>
                 <div className={styles.prev} onClick={homeClick} role="none">
                   <img src="/images/blackPrev.svg" alt="prev" />
@@ -247,11 +280,18 @@ function Chat() {
                       <div key={idx}>
                         {msg.id === 1 ? (
                           <div className={styles.msgType0}>
+                            <img
+                              src="/images/heart.svg"
+                              alt="heart"
+                              className={styles.heart}
+                            />
                             <span>{msg.text}</span>
+                            <p>{msg.time}</p>
                           </div>
                         ) : (
                           <div className={styles.msgType1}>
                             <span>{msg.text}</span>
+                            <p>{msg.time}</p>
                           </div>
                         )}
                       </div>
@@ -282,14 +322,14 @@ function Chat() {
                     ref={textareaRef}
                     value={text}
                     onChange={onChange}
-                    onKeyUp={activeEnter}
+                    onKeyUp={() => activeEnter}
                     onInput={adjustTextareaHeight}
                     placeholder="내용을 입력해주세요"
                     className={styles.textarea}
                   />
                   <div role="none" className={styles.sendBox}>
                     <img
-                      onClick={sendMsg}
+                      onClick={() => sendMsg()}
                       className={styles.send}
                       src="/images/send.svg"
                       alt="send"

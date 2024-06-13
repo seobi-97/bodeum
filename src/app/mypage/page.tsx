@@ -168,6 +168,7 @@ function MyPage() {
                           <img
                             src={val.imageURL || "/images/userIcon.svg"}
                             alt="userIcon"
+                            className={styles.boardImage}
                           />
                           <div className={styles.topRight}>
                             <div className={styles.nickName}>

@@ -133,13 +133,13 @@ function chatShare() {
   };
 
   const communityClick = () => {
-    setModalOpen(!modalOpen);
+    setModalOpen(true);
     setHome(false);
     setCommunity(true);
-    // router.push("/community");
   };
   const homeClick = () => {
-    setModalOpen(!modalOpen);
+    console.log("click");
+    setModalOpen(true);
     setCommunity(false);
     setHome(true);
   };
@@ -198,7 +198,6 @@ function chatShare() {
             Bodeum
           </div>
 
-          {/* <div className={styles.title}>BODEUM</div> */}
           <div className={styles.header}>
             <p>저장 버튼을 누른 대화 중 공유하고 싶은 답변을 선택해주세요.</p>
           </div>
