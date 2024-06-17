@@ -728,6 +728,7 @@ $green1: #e7ffaa;
     }
     .input {
       display: flex;
+      right: auto;
       input,
       textarea {
         max-height: 60px;
@@ -830,6 +831,10 @@ $green1: #e7ffaa;
   .sliderbackdrop {
     .chatSlider2 {
       justify-content: flex-start;
+    }
+    .chatone {
+      display: flex;
+      justify-content: center;
     }
   }
   .finish {

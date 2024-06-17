@@ -218,7 +218,9 @@ function chatShare() {
           </div>
           {ALL_CHAT.length < 4 || mobile ? (
             <div
-              className={styles.chatSlider2}
+              className={
+                ALL_CHAT.length === 1 ? styles.chatone : styles.chatSlider2
+              }
               style={{ zIndex: modalOpen ? "1" : "999" }}
             >
               {ALL_CHAT.map((obj: JSONDATA) => (

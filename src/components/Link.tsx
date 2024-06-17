@@ -48,7 +48,7 @@ function Link({ handleOpen, chatId, userId, handleToast }: Type) {
       >
         링크복사
       </div>
-      <div className={styles.line} />
+      {/* <div className={styles.line} /> */}
       {/* <div
         className={styles.close}
         onClick={() => handleOpen(String(chatId))}
