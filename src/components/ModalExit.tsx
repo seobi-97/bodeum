@@ -17,11 +17,13 @@ function ModalExit({ setModalOpen, text, button1, button2 }: ModalChatProps) {
     if (button2 === "끝내기") {
       router.push("/chatShare");
     } else if (button2 === "홈" || button2 === "종료하기") {
-      router.push("/");
+      window.location.replace("/");
     } else if (button2 === "공유하기") {
       router.push("/write");
     } else if (button2 === "뒤로가기") {
       router.push("/chatShare");
+    } else if (button2 === "커뮤니티") {
+      router.push("/community");
     }
   };
   return (

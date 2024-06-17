@@ -15,11 +15,13 @@ import Header from "@/components/header";
 import { useDeleteAll } from "@/hooks/useDeleteStorage";
 import CHARACTER from "@/data/Character";
 import Toast from "@/components/toast";
+import userTotalSelector from "@/recoil/selector/userTotalSelector";
 
 function MyPage() {
   const { isLoading, data } = useCommunity();
   console.log(data);
   const USER = useRecoilValue(userSelector);
+  const USERDATA = useRecoilValue(userTotalSelector);
   const BOARD = useRecoilValue(communitySelector);
   const router = useRouter();
 
@@ -36,11 +38,16 @@ function MyPage() {
   useEffect(() => {
     if (USER) {
       setNickname(USER.nickName);
-      setUserId(USER.userId);
       setUserImage(USER.imageURL);
+      setUserId(USER.userId);
     }
   }, [USER]);
-
+  useEffect(() => {
+    if (USERDATA) {
+      setNickname(USERDATA.nickName);
+      setUserImage(USERDATA.imageURL);
+    }
+  }, [USERDATA]);
   // board의 fluffyName으로 카운트
   const countFluffy = () => {
     const count = [0, 0, 0, 0];

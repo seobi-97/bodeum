@@ -29,7 +29,7 @@ function Edit() {
   const [text, setText] = useState<string>("");
   const [fluffyName, setFluffyname] = useState("");
   const { isLoading, isFetching, data2, refetch } = useEdit(USER.userId, {
-    nickname: text,
+    nickname: text === "" ? nickname : text,
     favoriteFluffyName: fluffyName,
   });
 

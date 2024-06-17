@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { MouseEvent, useEffect, useState, useRef } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
 import Skeleton from "../../components/skeleton";
 import styles from "../../styles/community.module.scss";
@@ -38,6 +38,7 @@ function Community() {
   const { PostRefetch } = usePostViews(boardId);
 
   const [mobile, setMobile] = useState(false);
+  const linkRef = useRef(null);
   console.log(mobile);
   const isClient = typeof window === "object";
   const getSize = () => {
@@ -88,6 +89,11 @@ function Community() {
   // ...버튼 오픈
   const handleOpen = (chatId: string) => {
     setOpen(open === chatId ? null : chatId);
+  };
+  const sideClick = (e: MouseEvent<HTMLDivElement>) => {
+    if (linkRef.current === e.target) {
+      setOpen(null);
+    }
   };
 
   const openPopup = async (id: number) => {
@@ -198,12 +204,20 @@ function Community() {
                         <p>{val.answer}</p>
                       </div>
                       {open === String(val.chatId) && (
-                        <LinkComponents
-                          handleOpen={handleOpen}
-                          chatId={val.chatId}
-                          userId={val.userId}
-                          handleToast={handleToast}
-                        />
+                        <>
+                          <div
+                            role="none"
+                            className={styles.side}
+                            onClick={sideClick}
+                            ref={linkRef}
+                          />
+                          <LinkComponents
+                            handleOpen={handleOpen}
+                            chatId={val.chatId}
+                            userId={val.userId}
+                            handleToast={handleToast}
+                          />
+                        </>
                       )}
                     </div>
                   );

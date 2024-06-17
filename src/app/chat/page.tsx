@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import { useRecoilValue, useSetRecoilState } from "recoil";
-import { useRouter } from "next/navigation";
 import characterSelector from "@/recoil/selector/characterSelector";
 import styles from "../../styles/chat.module.scss";
 import ModalExit from "../../components/ModalExit";
@@ -21,7 +20,6 @@ interface JSONDATA {
 }
 
 function Chat() {
-  const router = useRouter();
   const [text, setText] = useState<string>("");
   const [mobile, setMobile] = useState(false);
   const [message, setMessages] = useState<JSONDATA[]>([]);
@@ -58,7 +56,17 @@ function Chat() {
     setOpen(!open);
   };
 
+  const adjustTextareaHeight = () => {
+    if (textareaRef.current && mobile) {
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height = `${
+        textareaRef.current.scrollHeight - 20
+      }px`;
+    }
+  };
+
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    adjustTextareaHeight();
     setText(e.target.value);
   };
 
@@ -143,8 +151,8 @@ function Chat() {
   };
 
   const activeEnter = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    e.preventDefault();
     if (e.key === "Enter") {
+      e.preventDefault();
       if (text.trim() !== "") {
         console.log("text", text);
         sendMsg();
@@ -153,16 +161,7 @@ function Chat() {
   };
 
   const homeClick = () => {
-    router.push("/");
-  };
-
-  const adjustTextareaHeight = () => {
-    if (textareaRef.current && mobile) {
-      textareaRef.current.style.height = "auto";
-      textareaRef.current.style.height = `${
-        textareaRef.current.scrollHeight - 20
-      }px`;
-    }
+    window.location.replace("/");
   };
 
   // text에 따라 높이 조절
@@ -323,7 +322,7 @@ function Chat() {
                     value={text}
                     onChange={onChange}
                     onKeyUp={() => activeEnter}
-                    onInput={adjustTextareaHeight}
+                    // onInput={adjustTextareaHeight}
                     placeholder="내용을 입력해주세요"
                     className={styles.textarea}
                   />

@@ -15,12 +15,13 @@ import charactersSelector from "@/recoil/selector/charactersSelector";
 import characterState from "@/recoil/atom/characterAtom";
 import { useDeleteChat, useDeleteChatShare } from "@/hooks/useDeleteStorage";
 import CHARACTER from "@/data/Character";
-// 캐릭터 임시 데이터
-// 이미지 경로만 하드코딩 이용
 
 export default function MainPage() {
   const [isLogin, setLogin] = useState(false);
   const [characters, setCharacters] = useState([]);
+  const isClient = typeof window === "object";
+  const [mobile, setMobile] = useState(false);
+
   const setCharacter = useSetRecoilState(characterState);
   const router = useRouter();
   // 캐릭터 정보 요청
@@ -40,6 +41,24 @@ export default function MainPage() {
     useDeleteChat();
     useDeleteChatShare();
   }, []);
+  const getSize = () => {
+    return { width: isClient ? window.innerWidth : undefined };
+  };
+  const [windowSize, setWindowSize] = useState(getSize);
+  const handelResize = () => {
+    setWindowSize(getSize());
+  };
+  useEffect(() => {
+    if (windowSize.width !== undefined && windowSize.width < 1000) {
+      setMobile(true);
+    } else {
+      setMobile(false);
+    }
+    window.addEventListener("resize", handelResize);
+    return () => {
+      window.removeEventListener("resize", handelResize);
+    };
+  }, [windowSize]);
   const LoginKakaoFn = () => {
     window.location.href =
       "https://kauth.kakao.com/oauth/authorize?client_id=e1ca1242637d6f7e5d769861cbf80017&redirect_uri=https://bodeum.vercel.app/success&response_type=code";
@@ -143,7 +162,7 @@ export default function MainPage() {
                       width="20"
                       height="20"
                     />
-                    <span>카카오 로그인</span>
+                    <span>{!mobile ? "카카오로 시작하기" : "로그인"}</span>
                   </button>
                   <button
                     className={styles.defaultBtn}

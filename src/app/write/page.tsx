@@ -129,7 +129,7 @@ function write() {
                 setModalOpen={setModalOpen}
                 text={["작성한 내용이 없습니다."]}
                 button1="돌아가기"
-                button2="뒤로가기"
+                button2=""
               />
             ) : (
               <ModalExit

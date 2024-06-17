@@ -11,6 +11,7 @@ interface Type {
   handleToast: () => void;
 }
 function Link({ handleOpen, chatId, userId, handleToast }: Type) {
+  console.log(handleOpen);
   const id = useRecoilValue(userSelector).userId;
   // const baseUrl = "http://localhost:3000";
   const baseUrl = "https://bodeum.vercel.app";
@@ -48,13 +49,13 @@ function Link({ handleOpen, chatId, userId, handleToast }: Type) {
         링크복사
       </div>
       <div className={styles.line} />
-      <div
+      {/* <div
         className={styles.close}
         onClick={() => handleOpen(String(chatId))}
         role="none"
       >
         취소
-      </div>
+      </div> */}
     </div>
   );
 }

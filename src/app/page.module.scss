@@ -39,9 +39,17 @@
     color: gray;
     font-size: 28px;
     left: 48%;
+    span {
+      font-family: "Pretendard-Light";
+      font-size: 16px;
+    }
     @media (max-width: 1000px) {
-      left: 39%;
+      left: 40%;
       bottom: 10px;
+      span {
+        font-family: "Pretendard-Light";
+        font-size: 12px;
+      }
     }
     bottom: 30px;
     transition: opacity 1s;
@@ -95,6 +103,10 @@
 
       #logo {
         margin-left: 15px;
+        @media (max-width: 1000px) {
+          width: 191px;
+          height: 48px;
+        }
       }
 
       .desc {
@@ -110,28 +122,48 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
-
+        @media (max-width: 1000px) {
+          flex-direction: row;
+        }
         .kakaoBtn {
           display: flex;
-          width: 350px;
+          width: 360px;
           align-items: center;
           justify-content: center;
-          height: 60px;
+          height: 50px;
           background-color: #ffe500;
+          border-radius: 10px;
           span {
             margin-left: 5px;
+            font-family: "Pretendard-Medium";
+            font-size: 16px;
           }
           cursor: pointer;
+          @media (max-width: 1000px) {
+            width: 35vw;
+            span {
+              font-size: 14px;
+            }
+          }
         }
 
         .defaultBtn {
-          width: 350px;
-          font-family: "Pretendard-Medium";
-          font-size: 16px;
+          width: 360px;
           background-color: #ffffff;
           align-items: center;
-          height: 60px;
+          height: 50px;
           cursor: pointer;
+          border-radius: 10px;
+          span {
+            font-family: "Pretendard-Medium";
+            font-size: 16px;
+          }
+          @media (max-width: 1000px) {
+            width: 35vw;
+            span {
+              font-size: 14px;
+            }
+          }
         }
       }
     }
@@ -151,6 +183,7 @@
         overflow-x: auto;
         padding: 20px;
         width: 100%;
+        gap: 16px;
 
         & > div:nth-child(even) {
           transform: none;
@@ -192,6 +225,17 @@
           font-size: 16px;
           font-weight: 400;
           text-align: center;
+        }
+        @media (max-width: 1000px) {
+          width: 43vw;
+          min-width: 43vw;
+          height: 220px;
+          img {
+            width: 20vw;
+          }
+          .info {
+            font-size: 11px;
+          }
         }
       }
     }

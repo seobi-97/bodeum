@@ -12,6 +12,7 @@ import MODAL from "../../constants/Modal";
 
 import chatState from "@/recoil/atom/chat";
 import chatShareState from "@/recoil/atom/chatShare";
+import userSelector from "@/recoil/selector/userSelector";
 
 interface JSONDATA {
   id: number;
@@ -40,6 +41,7 @@ function chatShare() {
   const setChatShare = useSetRecoilState(chatShareState);
   const divRef = useRef(null);
   const [mobile, setMobile] = useState(false);
+  const USER = useRecoilValue(userSelector);
   // 첫번째 인사말을 제외한 대화내용
   const CHAT = useRecoilValue(chatState).slice(1);
   // 내가 한 대화
@@ -108,13 +110,17 @@ function chatShare() {
   };
   // x 아이콘 클릭 시 모달 open
   const ExitClick = () => {
-    if (ALL_CHAT.length === 1) {
-      setChatShare(ALL_CHAT[0]);
-      setNormal(false);
+    if (USER.isLogin) {
+      if (ALL_CHAT.length === 1) {
+        setChatShare(ALL_CHAT[0]);
+        setNormal(false);
+      }
+      setModalOpen(!modalOpen);
+      setCommunity(false);
+      setHome(false);
+    } else {
+      setModalOpen(true);
     }
-    setModalOpen(!modalOpen);
-    setCommunity(false);
-    setHome(false);
   };
   const onSideClick = (e: MouseEvent<HTMLDivElement>) => {
     if (divRef.current === e.target) {
@@ -195,11 +201,20 @@ function chatShare() {
             onKeyDown={() => onSideClick}
           />
           <div className={styles.bodeum} role="none" onClick={homeClick}>
-            Bodeum
+            <p>Bodeum</p>
           </div>
 
           <div className={styles.header}>
-            <p>저장 버튼을 누른 대화 중 공유하고 싶은 답변을 선택해주세요.</p>
+            {mobile ? (
+              <>
+                <p>저장 버튼을 누른 대화 중</p>
+                <p>공유하고 싶은 답변 1개를 선택해주세요.</p>
+              </>
+            ) : (
+              <p>
+                저장 버튼을 누른 대화 중 공유하고 싶은 답변 1개를 선택해주세요.
+              </p>
+            )}
           </div>
           {ALL_CHAT.length < 4 || mobile ? (
             <div
@@ -246,14 +261,16 @@ function chatShare() {
             >
               커뮤니티
             </div>
-            <div
-              className={styles.sharebutton}
-              role="none"
-              onClick={ExitClick}
-              style={{ zIndex: modalOpen ? "1" : "999" }}
-            >
-              공유하기
-            </div>
+            {USER?.isLogin && (
+              <div
+                className={styles.sharebutton}
+                role="none"
+                onClick={ExitClick}
+                style={{ zIndex: modalOpen ? "1" : "999" }}
+              >
+                공유하기
+              </div>
+            )}
           </div>
         </div>
       </div>

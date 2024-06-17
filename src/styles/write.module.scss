@@ -155,15 +155,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.5);
+  // background-color: rgba(0, 0, 0, 0.5);
   .postBox {
     width: 300px;
     height: 40px;
     border-radius: 15px;
-    background: #f2f7df;
+    background: rgba(0, 0, 0, 0.5);
     padding: 10px;
     z-index: 9999;
     text-align: center;
+    color: #fff;
   }
 }
 
@@ -186,5 +187,8 @@
         }
       }
     }
+  }
+  .postContainer {
+    align-items: end;
   }
 }
